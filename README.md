@@ -1,2 +1,1 @@
-# 415groupProjectRedux
-Assignment 2 Onwards
+We used the O/S based off of Group 1. Thanks guys!
