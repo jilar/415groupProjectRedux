@@ -6,13 +6,20 @@
     <script src="OS.js"></script>
     <script src="Processes.js"></script>
     <script src="start-OS.js"></script>
+    <script src="Display.js"></script>
+    <script src="Keyboard.js"></script>
+    <script src="Commands.js"></script>
   </head>
   <body>
-    <div id="console" contenteditable="true" style="border:1px black solid; width:1000px; height:600px;overflow:auto;">Console Here
-        <div id="container">
-            
+      <p>Enter console commands in this box.</p>
+       <input id="input" onKeyDown="keyboard()" type="text" maxlength="512"/>
+    <div id= "console" style="border:1px black solid; width:1000px; height:600px;overflow:auto;">Console Here
+<!--        <div id="container">   -->
     </div>  
     
     </div>
   </body>
 </html>
+
+
+
