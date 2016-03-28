@@ -8,7 +8,7 @@ window.onload = function(){
     var everyProcessStopped = false;
 
     while (!everyProcessStopped) {
-      everyProcessStopped = Processes.listOfProcesses.every(function(element){
+      everyProcessStopped = Processes.listOfProcesses.every(function(element){         //every process must be stopped for whole
         if (element.state == "Stop") {
           return true;
         } else {

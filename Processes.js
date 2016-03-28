@@ -12,7 +12,7 @@ var Processes = {
       }
     });
     return oProcess;
-  },
+  }, 
   listOfProcesses: [
     {
       name: "Bank Book Calculator",
@@ -78,7 +78,7 @@ var Processes = {
           case 1:
 
             console.log(Processes.listOfProcesses[0].variables.szFileName);
-            OS.FS.open(Processes.listOfProcesses[0].variables.szFileName);
+            OS.FS.open(Processes.listOfProcesses[0].variables.szFileName);                       //open the process! Focus on this area for our bankbook process start operation
 
           break;
           case 2:
@@ -200,7 +200,7 @@ var Processes = {
 
       }
     },
-    {
+    { 
       name: "Contact Manager",
       state: "Ready",
       programCounter: 0,
@@ -364,7 +364,7 @@ var Processes = {
       }
       }
     },
-    {
+    { 
       name: "Update Security File",
       state: "Ready",
       programCounter: 0,
@@ -466,7 +466,7 @@ var Processes = {
       }
     }
     },
-    {
+    { 
       name: "Routes",
       state: "Ready",
       programCounter: 0,
@@ -915,6 +915,7 @@ var Processes = {
           break;
           case 9:
               OS.FS.close("statsResult.csv");
+              Directory.push("statsResult.csv");
 
           default:
               Processes.listOfProcesses[5].state = "Stop";
@@ -932,7 +933,10 @@ var Processes = {
       }
     },
   ],
-  listOfDevices: [
+  
+    
+    
+   listOfDevices: [                                                                          
     {
       name: "File IO",
       state: "Ready",
