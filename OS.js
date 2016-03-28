@@ -4,7 +4,7 @@ var OS = {
       //Processes.listOfDevices[0].create(szFileName,szContent);
       console.log("In Create");
       var process = Processes.findProcessByName(OS.FS.create.caller.displayName);
-      container.innerHTML += "</br> Adding "+ process.name + " to queue";
+      container.innerHTML += "</br> Adding"+ process.name + " to queue";
       process.state = "Waiting";
       OS.ProcessQueue.enqueue(
         OS.ProcessQueue.wrapFunction(
