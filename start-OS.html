@@ -1,4 +1,4 @@
-<html>
+<!--<html>
   <head>
     <script src="Display.js"></script>  
     <script src="File.js"></script>
@@ -14,16 +14,54 @@
       <p>This is the CLI for CS415 Programming Project. 
       <br>The available commands for the CLI are as follows: clear, dir, delete, copy, ps, start, kill, cat , and man. 
       <br>Please enter "man" command for more info on commands.
-      <br>The available processes are as follows: bankCalculator, contactManager, securityUpdate, shortestRoute, addVectors, calculateStats </p>
-      <brEnter console commands in this box.</p>
+      <br>The available processes are as follows: bankCalculator, contactManager, securityUpdate, shortestRoute, addVectors, calculateStats 
+      <br><br>Enter console commands in this box.</p>
        <input id="input" onKeyDown="keyboard()" type="text" maxlength="512"/>
-    <div id= "console" style="border:1px black solid; width:1000px; height:600px;overflow:auto;">
-<!--       <div id="container">   -->
+    <div id= "console" style="border:1px black solid; width:1000px; height:575px;overflow:auto;">
+       <div id="container">   
     </div>  
     
     </div>
   </body>
+</html>-->
+
+<html>
+  <head>
+    <script src="Display.js"></script>  
+    <script src="File.js"></script>
+    <script src="Directory.js"></script>
+    <script src="OS.js"></script>
+    <script src="Processes.js"></script>
+    <script src="start-OS.js"></script>
+    <script src="Display.js"></script>
+    <script src="Keyboard.js"></script>
+    <script src="Commands.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="start-OS.css">
+  </head>
+  <body>
+      <p>This is the CLI for CS415 Programming Project. 
+      <br>The available commands for the CLI are as follows: clear, dir, delete, copy, ps, start, kill, cat , and man. 
+      <br>Please enter "man" command for more info on commands.
+      <br>The available processes are as follows: bankCalculator, contactManager, securityUpdate, shortestRoute, addVectors, calculateStats </p>
+    <div id= "console" class="container" style="border:1px black solid; width:1000px; height:600px;overflow:auto;">
+<!--       <div id="container">   -->
+    </div>   
+  <br>Enter console commands in this box<br>
+      <input id="input" onKeyDown="keyboard()" type="text" class="inp" maxlength="512"/>
+       <script>
+        var $cont = $('.container');
+        $cont[0].scrollTop = $cont[0].scrollHeight;
+​
+        $('.inp').keyup(function(e) {
+        if (e.keyCode == 13) {
+            $cont.append($(this).val());
+            $cont[0].scrollTop = $cont[0].scrollHeight;
+            $(this).val('');
+        }
+        })
+        .focus();
+       </script>
+  </body>
 </html>
-
-
 
