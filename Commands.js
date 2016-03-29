@@ -39,16 +39,16 @@ function doCommand(){
         case 7:                                                                      //cat command
             break;
         case 8:                                                                      //man command
-            var manual="</br>clear  - Erases the console window \n\
-                        </br>dir    - Lists current files in directory\n\
-                        </br>delete - Deletes specidifed file. Enter command as follows: delete <filename>\n\
-                        </br>copy   - Create a copy of specified file. It will be located in same directory. Enter command as follows: copy \<\ filename\>\ \n\
-                        </br>ps     - Lists current running processes. \n\
-                        </br>start  - Start a specified process. All processes started must be terminated manually. Enter command as follows: start \<processname\> \n\
-                        </br>kill   - Terminate a running process and display its resulting computation. Enter command as follows: delete <processname> \n\
-                        </br>cat    - Displays contents of specified file. Enter command as follows: cat <filename> \n\
-                        </br>man    - The command manual. You're using right now silly.";
-            display.displayItem(manual);                                
+            var manual="</br>clear&emsp;&ensp;&thinsp;-&emsp;Erases the console window,"+     
+                        "</br>dir&emsp;&ensp;&emsp;-&emsp;Lists current files in directory."+    
+                        "</br>delete&emsp;&thinsp;-&emsp;Deletes specified file. Enter command as follows: delete \<\ffilename\>"+
+                        "</br>copy&ensp;&ensp;&thinsp;&thinsp;&thinsp;-&emsp;Create a copy of specified file. It will be located in same directory. Enter command as follows: copy \<\ffilename\>"+
+                        "</br>ps&emsp;&emsp;&thinsp;&thinsp;&thinsp;-&emsp;Lists current running processes."+
+                        "</br>start&emsp;&thinsp;&thinsp;&thinsp;&thinsp;-&emsp;Start a specified process. All processes started must be terminated manually. Enter command as follows: start \<\fprocessname\>"+
+                        "</br>kill&emsp;&emsp;&thinsp;-&emsp;Terminate a running process and display its resulting computation. Enter command as follows: kill \<\fprocessname>"+
+                        "</br>cat&emsp;&emsp;&thinsp;&thinsp;-&emsp;Displays contents of specified file. Enter command as follows: cat \<\ffilename\>"+
+                        "</br>man&emsp;&ensp;&thinsp;&thinsp;-&emsp;The command manual, you're using it right now silly.";
+            display.displayItem(manual);                          
             break;    
     }
 }
