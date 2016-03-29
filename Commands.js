@@ -2,12 +2,14 @@
 var command;                  //global variable acts to            
 var commandList=["clear","dir","delete", "copy", "ps", "start", "kill", "cat" ,"man"];    //list of commands
 var target;                  //target file/process for commands which ask for a second arguement
+var commandIndex;
+var targetIndex;
 
 
 function checkCommand(){
     if(commandList.indexOf(command)==-1){
-//        document.getElementById("console").innerHTML +="</br> Debug "+command;                  //debugger statement
-        display.badCommand(command);                       //user input not in command array (Invalid Command)...display command was not recofnized
+ //       document.getElementById("console").innerHTML +="</br> Debug "+command;                  //debugger statement
+        display.badCommand();                       //user input not in command array (Invalid Command)...display command was not recofnized
     }else{
         commandIndex=commandList.indexOf(command);                                       
         doCommand();
@@ -27,6 +29,14 @@ function doCommand(){
             }
             break;
         case 2:                                                                      //delete command
+            if(Directory.indexOf(target)==-1){
+                display.badCommand(); 
+            }else{
+                targetIndex=Directory.indexOf(target);
+//                document.getElementById("console").innerHTML +="<br>Debug "+targetIndex;        //debugger
+                Directory.splice(targetIndex, 1);
+                display.displayItem("<br>"+target+" deleted from file Directory");
+            }
             break;
         case 3:                                                                      //copy command           
             break;
