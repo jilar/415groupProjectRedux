@@ -11,7 +11,8 @@ var display={
         document.getElementById("console").innerHTML +=Item+" ";                    // displays user input 
     },
 
-    badCommand: function(){
+    badCommand: function(baditem){
+        //if(typeofbaditem != "undefined")                                         //my own testing ignore this line for now guys haha-Jeffrey
         document.getElementById("console").innerHTML +="</br>Unrecognized Command";      //bad command 
     },
 
