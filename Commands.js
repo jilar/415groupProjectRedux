@@ -111,7 +111,7 @@ function doCommand(){
             }
             break;    
         case 9:                                                                      //man command
-            var manual="</br>clear&emsp;&ensp;&thinsp;-&emsp;Erases the console window,"+     
+            var manual="</br>clear&emsp;&ensp;&thinsp;-&emsp;Erases the console window."+     
                         "</br>dir&emsp;&ensp;&emsp;-&emsp;Lists current files in directory."+    
                         "</br>delete&emsp;&thinsp;-&emsp;Deletes specified file. Enter command as follows: delete \<\ffilename\>"+
                         "</br>copy&ensp;&ensp;&thinsp;&thinsp;&thinsp;-&emsp;Create a copy of specified file. It will be located in same directory. Enter command as follows: copy \<\ffilename\> \<\fnewfilename\>"+
