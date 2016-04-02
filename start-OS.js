@@ -47,7 +47,7 @@ window.onload = function(){
                 szFileContents = szFileContents + aryBankBook[k][0] + ":";
                 szFileContents = szFileContents + aryBankBook[k][1] + ",\n";
               }
-              Directory.content[0]=szFileContents;
+              Directory0.content[0]=szFileContents;
   }
   function getTransactionType(){                                                  //createBank helper function
             var nTransactionType = Math.floor(Math.random() * 4.0);
@@ -84,6 +84,6 @@ window.onload = function(){
                
               return nFormattedResult;
     }
-  //start();
+  start();
   createBank();
 }

@@ -18,6 +18,7 @@ var Processes = {
       name: "Bank Book Calculator",
       state: "Ready",
       programCounter: 0,
+      running: false,
       variables:{
 
       },
@@ -57,8 +58,8 @@ var Processes = {
                   aryBankBook[i,1] = nTransactionAmount;
 
                 }
-                console.log(aryBankBook[i,0]);
-                console.log(aryBankBook[i,1]);
+//                console.log(aryBankBook[i,0]);
+//                console.log(aryBankBook[i,1]);
 
               }
 
@@ -137,22 +138,23 @@ var Processes = {
             }
 
             //display results
-            var szFormattedResults = "Bank Book<br>";
-            szFormattedResults = "<table>";
+            var szFormattedResults;
             for (i = 0; i < aryBankBook.length; i++){
-              szFormattedResults = szFormattedResults + "<tr><td>";
+              szFormattedResults = szFormattedResults + "<br>";
               szFormattedResults = szFormattedResults + aryBankBook[i,0];
-              szFormattedResults = szFormattedResults + "</td>"
-              szFormattedResults = szFormattedResults + "<td style=\"text-align:right\">"
+//              szFormattedResults = szFormattedResults + "</td>"
+              szFormattedResults = szFormattedResults + "<br>"
               szFormattedResults = szFormattedResults + aryBankBook[i,1];
-              szFormattedResults = szFormattedResults + "</td></tr>"
+//              szFormattedResults = szFormattedResults + "</td></tr>"
             }
-            szFormattedResults = szFormattedResults + "<tr><td>"
-            szFormattedResults = szFormattedResults + "Total: </td>"
-            szFormattedResults = szFormattedResults + "<td style=\"text-align:right\">"
+//            szFormattedResults = szFormattedResults + "<tr><td>"
+            szFormattedResults = szFormattedResults + "<br>Total: </td>"
+//            szFormattedResults = szFormattedResults + "<td style=\"text-align:right\">"
             szFormattedResults = szFormattedResults + nBankBookTotal;
-            szFormattedResults = szFormattedResults + "</td></tr></table>"
-
+//            szFormattedResults = szFormattedResults + "</td></tr>"
+            
+          
+            displayResults[0]=szFormattedResults;                                   ////////////////////////////////changes
             Processes.listOfProcesses[0].programCounter++;
 
               break;
@@ -204,6 +206,7 @@ var Processes = {
       name: "Contact Manager",
       state: "Ready",
       programCounter: 0,
+      running: false,
       variables:{},
       main: function(counter){
         switch (counter){
@@ -337,7 +340,7 @@ var Processes = {
               output += "\n";
             }
           }
-          console.log("To be written: " + output);
+//          console.log("To be written: " + output);
           Processes.listOfProcesses[1].variables.output = output;
           //Open and write to the resultant file
           OS.FS.create("ContactManager Results.csv", "");
@@ -358,7 +361,7 @@ var Processes = {
           case 11:
           //container.innerHTML += "</br>" + Processes.listOfProcesses[1].variables.output;
           OS.FS.close("ContactManager Results.csv");
-
+          displayResults[1]=output;   
           default:
           Processes.listOfProcesses[1].state = "Stop";
       }
@@ -367,6 +370,7 @@ var Processes = {
     { 
       name: "Update Security File",
       state: "Ready",
+      running: false,
       programCounter: 0,
       variables:{},
       main: function(counter){
@@ -460,6 +464,7 @@ var Processes = {
           case 9:
           //container.innerHTML += "</br>" + Processes.listOfProcesses[2].variables.content;
           OS.FS.close("securityFile.csv");
+          displayResults[2]="Security file updated.";   
           default:
           Processes.listOfProcesses[2].state = "Stop";
 
@@ -469,6 +474,7 @@ var Processes = {
     { 
       name: "Routes",
       state: "Ready",
+      running: false,
       programCounter: 0,
       variables:{},
       main: function(counter){
@@ -637,6 +643,7 @@ var Processes = {
          Processes.listOfProcesses[3].variables.result = result;
 
          OS.FS.create("result.csv", result);
+         displayResults[3]=result;   
          break;
 
          case 7:
@@ -654,6 +661,7 @@ var Processes = {
     {
       name: "Calculate Vectors",
       state: "Ready",
+      running: false,
       programCounter: 0,
       variables:{},
       main: function(counter){
@@ -739,6 +747,7 @@ var Processes = {
 
 
               OS.FS.create("Results.csv", szResults);
+              displayResults[4]=szResults;   
           break;
           case 8:
               OS.FS.close("vectorData");
@@ -907,6 +916,7 @@ var Processes = {
               standardDeviation(rows);
 
               OS.FS.create("statsResult.csv", result);
+              displayResult[5]==result
 
           break;
           case 8:
@@ -922,16 +932,16 @@ var Processes = {
         }
       }
     },
-    {
-      name: "Custon Process",
-      state: "Stop",
-      programCounter: 0,
-      variables:{},
-      main: function(){
-        //Lets do some thing fun here
-        //Please use OS.FS functions to access files
-      }
-    },
+//    {
+//      name: "Custon Process",
+//      state: "Stop",
+//      programCounter: 0,
+//      variables:{},
+//      main: function(){
+//        //Lets do some thing fun here
+//        //Please use OS.FS functions to access files
+//      }
+//    },
   ],
   
     
@@ -951,7 +961,7 @@ var Processes = {
       create: function(szNameOFCallingFunction,szFileName,szContent){
         console.log("Device creating for " + szNameOFCallingFunction);
         var process = Processes.findProcessByName(szNameOFCallingFunction);
-        container.innerHTML += "</br>Creating "+szFileName+" for "+process.name;
+//        container.innerHTML += "</br>Creating "+szFileName+" for "+process.name;
         console.log(process.state);
         process.state = "Ready";
         process.programCounter++;
@@ -960,33 +970,33 @@ var Processes = {
       delete: function(szNameOFCallingFunction,szFileName){
         console.log("Device deleting for " + szNameOFCallingFunction);
         var process = Processes.findProcessByName(szNameOFCallingFunction);
-        container.innerHTML += "</br>Deleting "+szFileName+" for "+process.name;
+//        container.innerHTML += "</br>Deleting "+szFileName+" for "+process.name;
         console.log(process.state);
         process.state = "Ready";
         process.programCounter++;
-        for(var file of Directory.Files){
-          if(file.isName(szFileName));
-        }
+//        for(var file of Directory.Files){
+//          if(file.isName(szFileName));
+//        }
       },
       open: function(szNameOFCallingFunction,szFileName){
         console.log("Device opening for " + szNameOFCallingFunction);
         var process = Processes.findProcessByName(szNameOFCallingFunction);
-        container.innerHTML += "</br>Opening "+szFileName+" for "+process.name;
+//        container.innerHTML += "</br>Opening "+szFileName+" for "+process.name;
         console.log(process.state);
         process.state = "Ready";
         process.programCounter++;
-        for(var file of Directory.Files){
-          if(file.isName(szFileName)) {
-            process.variables.returnedFile = file;
-            console.log(file);
-            return file;
-          }
-        }
+//        for(var file of Directory.Files){
+//          if(file.isName(szFileName)) {
+//            process.variables.returnedFile = file;
+//            console.log(file);
+//            return file;
+//          }
+//        }
       },
       close: function(szNameOFCallingFunction,szFileName){
         console.log("Device closing for " + szNameOFCallingFunction);
         var process = Processes.findProcessByName(szNameOFCallingFunction);
-        container.innerHTML += "</br>Closing "+szFileName+" for "+process.name;
+  //      container.innerHTML += "</br>Closing "+szFileName+" for "+process.name;
         console.log(process.state);
         process.state = "Ready";
         process.programCounter++;
@@ -995,7 +1005,7 @@ var Processes = {
       read: function(szNameOFCallingFunction,oFilePointer){
         console.log("Device reading for " + szNameOFCallingFunction);
         var process = Processes.findProcessByName(szNameOFCallingFunction);
-        container.innerHTML += "</br>Reading from "+oFilePointer.accessName();
+ //       container.innerHTML += "</br>Reading from "+oFilePointer.accessName();
         console.log(process.state);
         process.state = "Ready";
         process.programCounter++;
@@ -1017,7 +1027,7 @@ var Processes = {
       write: function(szNameOFCallingFunction,oFilePointer,szInput){
         console.log("Device writing for " + szNameOFCallingFunction);
         var process = Processes.findProcessByName(szNameOFCallingFunction);
-        container.innerHTML += "</br>Writing to "+oFilePointer.accessName();
+   //     container.innerHTML += "</br>Writing to "+oFilePointer.accessName();
         console.log(process.state);
         process.state = "Ready";
         process.programCounter++;
@@ -1031,7 +1041,7 @@ var Processes = {
       position: function(szNameOFCallingFunction,oFilePointer){
         console.log("Device finding postion for " + szNameOFCallingFunction);
         var process = Processes.findProcessByName(szNameOFCallingFunction);
-        container.innerHTML += "</br>Accessing position of "+oFilePointer.accessName();
+  //      container.innerHTML += "</br>Accessing position of "+oFilePointer.accessName();
         console.log(process.state);
         process.state = "Ready";
         process.programCounter++;
@@ -1040,7 +1050,7 @@ var Processes = {
       lengthOfFile: function(szNameOFCallingFunction,oFilePointer){
         console.log("Device acquiring length for " + szNameOFCallingFunction);
         var process = Processes.findProcessByName(szNameOFCallingFunction);
-        container.innerHTML += "</br>Accessing length of "+oFilePointer.accessName();
+ //       container.innerHTML += "</br>Accessing length of "+oFilePointer.accessName();
         console.log(process.state);
         process.state = "Ready";
         process.programCounter++;
