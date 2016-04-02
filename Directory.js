@@ -1,11 +1,11 @@
-//var Directory = {
-//  Files: [],
-//}
+var Directory = {
+  Files: [],
+}
 
 //Directory of current files and processes
-var Directory = {
+var Directory0 = {
    filename:["bankBook.csv","ContactManager.csv","securityFile.csv","route.csv","vectorData.csv","statsFile.csv"],
-   content:["dummy content",                                                                                          //bank
+   content:["",                                                                                          //bank, file is created on startup
           "James,Butt,6649 N Blue Gum St,New Orleans,LA,70116,504-621-8927,jbutt@gmail.com\n"                          //contacts
           + "Josephine,Darakjy,4 B Blue Ridge Blvd,Brighton,MI,48116,810-292-9388,josephine_darakjy@darakjy.org\n"
           + "Art,Venere,8 W Cerritos Ave #54,Bridgeport,NJ,8014,856-636-8749,art@venere.org\n"

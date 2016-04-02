@@ -5,6 +5,8 @@ var target;                                                                     
 var name;                                                                                        //for file name change
 var commandIndex;
 var targetIndex;
+var displayResults=[];                                                                          //array of process results
+var pRunning=[false,false,false,false,false,false];
 
 
 function checkCommand(){
@@ -24,54 +26,55 @@ function doCommand(){
             break;
         case 1:                                                                      //dir command
             display.displayItem("<br>");
-            for(i=0; i<Directory.filename.length; i++){
-            display.displayItem(Directory.filename[i]);
+            for(i=0; i<Directory0.filename.length; i++){
+            display.displayItem(Directory0.filename[i]);
             }
             break;
         case 2:                                                                      //delete command
-            if(Directory.filename.indexOf(target)==-1){
+            if(Directory0.filename.indexOf(target)==-1){
                 display.badCommand(); 
             }else{
-                targetIndex=Directory.filename.indexOf(target);
-                Directory.filename.splice(targetIndex, 1);
-                Directory.content.splice(targetIndex, 1);
+                targetIndex=Directory0.filename.indexOf(target);
+                Directory0.filename.splice(targetIndex, 1);
+                Directory0.content.splice(targetIndex, 1);
                 display.displayItem("<br>"+target+" deleted from file Directory");
             }
             break;
         case 3:                                                                      //copy command
-             if(Directory.filename.indexOf(target)==-1){
+             if(Directory0.filename.indexOf(target)==-1){
                 display.badCommand();
             }else if(name==""){
                 display.badCommand(); 
             }
             else{
-                targetIndex=Directory.filename.indexOf(target);
-                Directory.filename.push(name);
-                Directory.content.push(Directory.content[targetIndex]);
+                targetIndex=Directory0.filename.indexOf(target);
+                Directory0.filename.push(name);
+                Directory0.content.push(Directory0.content[targetIndex]);
                 display.displayItem("<br> File "+ name+" added to directory" );
             }
             break;
         case 4:                                                                      //ps command
             var counter=0;
-//            for(i=0; i<Processes.listOfProcesses.length; i++){
-//              if(Processes.listOfProcesses[i].running==true){                           //need to add running variable to each process.
-//                  display.displayItem(Directory[i]);
-//                  counter++
-//              }  
-//            }
-//            if(counter!=0){                                                             
+            for(i=0; i<pRunning.length; i++){
+              if(pRunning[i]==true){                           //need to add running variable to each process.
+                  display.displayItem("<br>"+Directory0.filename[i]);
+                  counter=counter+1;
+              }  
+            }if(counter==0){                                                        
                 display.displayItem("<br>Currently no processes are running");
-//            }
+            }    
             break;
-        case 5:                                                                      //start command
-            if(ProcessNames.indexOf(target)==-1){
+        case 5:                                                                          //start command
+            targetIndex=ProcessNames.indexOf(target);
+            if(targetIndex==-1){
                 display.badCommand(); 
-            }else{
-                 targetIndex=ProcessNames.indexOf(target);
-                 switch(target){
+            }else if(Processes.listOfProcesses[targetIndex].running==true){
+                display.displayItem("<br>"+target+" is already running");
+            }else {
+                Processes.listOfProcesses[targetIndex].running=true;
+                pRunning[targetIndex]=true;
+                switch(targetIndex){
                     case 0:
-                        //command to do process 1
-                        //set process 1 running flag to true
                          break;
                     case 1:
                          break;
@@ -87,26 +90,37 @@ function doCommand(){
             display.displayItem("<br> Process has fininished but is still running. Please use kill command to terminate process.")     
             }
             break;
-        case 6:                                                                      //kill command                                                                    
+        case 6:                                                                      //kill command   
+            targetIndex=ProcessNames.indexOf(target);
+            if(targetIndex==-1){
+                display.badCommand(); 
+            }else if(Processes.listOfProcesses[targetIndex].running==false){
+                display.displayItem("<br>"+target+" is not running");
+            }else{
+                Processes.listOfProcesses[targetIndex].running=false;
+                pRunning[targetIndex]=false;
+                display.displayItem("<br>"+target+" has terminated. Now displaying results.");
+                display.displayItem("<br>"+displayResults[targetIndex]);
+            }
             break;
         case 7:                                                                      //cat command
-            if(Directory.filename.indexOf(target)==-1){
+            if(Directory0.filename.indexOf(target)==-1){
                 display.badCommand(); 
             }else{
-                targetIndex=Directory.filename.indexOf(target);
+                targetIndex=Directory0.filename.indexOf(target);
                 display.displayItem("<br>Opening "+target);
-                display.displayItem("<br>"+ Directory.content[targetIndex]);
+                display.displayItem("<br>"+ Directory0.content[targetIndex]);
             }
             break;
         case 8:                                                                      //ren command
-            if(Directory.filename.indexOf(target)==-1){
+            if(Directory0.filename.indexOf(target)==-1){
                 display.badCommand();
             }else if(name==""){
                 display.badCommand(); 
             }
             else{
-                targetIndex=Directory.filename.indexOf(target);
-                Directory.filename[targetIndex]=name;
+                targetIndex=Directory0.filename.indexOf(target);
+                Directory0.filename[targetIndex]=name;
                 display.displayItem("<br>"+target+" renamed to "+name);
             }
             break;    
