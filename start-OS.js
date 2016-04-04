@@ -84,6 +84,6 @@ window.onload = function(){
                
               return nFormattedResult;
     }
+  createBank();  
   start();
-  createBank();
 }
