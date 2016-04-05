@@ -68,7 +68,7 @@ function doCommand(){
             targetIndex=ProcessNames.indexOf(target);
             if(targetIndex==-1){
                 display.badCommand(); 
-            }else if(Processes.listOfProcesses[targetIndex].running==true || a4Processes[targetindex-6].running==true){
+            }else if(Processes.listOfProcesses[targetIndex].running==true){
                 display.displayItem("<br>"+target+" is already running");
             }else {
                 switch(targetIndex){
@@ -100,6 +100,7 @@ function doCommand(){
                     //call a4 process
                     //set a4 process running flag to true.
                     //Example on seeting running flag for graphicsProcess ->a4Processes[0].running=true          [0] because it is the first process in our a4Processes array
+                    break;
                  }
             display.displayItem("<br> Process has fininished but is still running. Please use kill command to terminate process.")     
             }
