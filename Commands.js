@@ -57,7 +57,7 @@ function doCommand(){
             var counter=0;
             for(i=0; i<pRunning.length; i++){
               if(pRunning[i]==true){                           //need to add running variable to each process.
-                  display.displayItem("<br>"+Directory0.filename[i]);
+                  display.displayItem("<br>"+ProcessNames[i]);
                   counter=counter+1;
               }  
             }if(counter==0){                                                        
