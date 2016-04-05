@@ -5,7 +5,7 @@ var target;                                                                     
 var name;                                                                                        //for file name change
 var commandIndex;
 var targetIndex;
-var displayResults=[];                                                                          //array of process results
+var displayResults=[]                 
 var pRunning=[false,false,false,false,false,false];
 
 
@@ -27,7 +27,7 @@ function doCommand(){
         case 1:                                                                      //dir command
             display.displayItem("<br>");
             for(i=0; i<Directory0.filename.length; i++){
-            display.displayItem(Directory0.filename[i]);
+                display.displayItem(Directory0.filename[i]);
             }
             break;
         case 2:                                                                      //delete command
@@ -68,24 +68,38 @@ function doCommand(){
             targetIndex=ProcessNames.indexOf(target);
             if(targetIndex==-1){
                 display.badCommand(); 
-            }else if(Processes.listOfProcesses[targetIndex].running==true){
+            }else if(Processes.listOfProcesses[targetIndex].running==true || a4Processes[targetindex-6].running==true){
                 display.displayItem("<br>"+target+" is already running");
             }else {
-                Processes.listOfProcesses[targetIndex].running=true;
-                pRunning[targetIndex]=true;
                 switch(targetIndex){
                     case 0:
+                         Processes.listOfProcesses[targetIndex].running=true;
+                         pRunning[targetIndex]=true;
                          break;
                     case 1:
+                        Processes.listOfProcesses[targetIndex].running=true;
+                        pRunning[targetIndex]=true;
                          break;
                     case 2:
+                        Processes.listOfProcesses[targetIndex].running=true;
+                        pRunning[targetIndex]=true;
                          break;
                     case 3:
+                        Processes.listOfProcesses[targetIndex].running=true;
+                        pRunning[targetIndex]=true;
                          break;
                     case 4:
+                        Processes.listOfProcesses[targetIndex].running=true;
+                        pRunning[targetIndex]=true;
                          break;
                     case 5:
+                        Processes.listOfProcesses[targetIndex].running=true;
+                        pRunning[targetIndex]=true;
                          break;
+                    case 6:
+                    //call a4 process
+                    //set a4 process running flag to true.
+                    //Example on seeting running flag for graphicsProcess ->a4Processes[0].running=true          [0] because it is the first process in our a4Processes array
                  }
             display.displayItem("<br> Process has fininished but is still running. Please use kill command to terminate process.")     
             }
