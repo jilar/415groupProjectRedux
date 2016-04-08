@@ -6,7 +6,7 @@ var name;                                                                       
 var commandIndex;
 var targetIndex;
 var displayResults=[]                 
-var pRunning=[false,false,false,false,false,false];
+var pRunning=[false,false,false,false,false,false,false,false,false,false,false,false];
 
 
 function checkCommand(){
@@ -67,55 +67,112 @@ function doCommand(){
         case 5:                                                                          //start command
             targetIndex=ProcessNames.indexOf(target);
             if(targetIndex==-1){
-                display.badCommand(); 
-            }else if(Processes.listOfProcesses[targetIndex].running==true){
-                display.displayItem("<br>"+target+" is already running");
-            }else {
+                display.badCommand();      
+           }else {
+               if(targetIndex<6){
+                    if(Processes.listOfProcesses[targetIndex].running==true){
+                        display.displayItem("<br>"+target+" is already running");          
+                        targetIndex=10000;
+                    }
+               }else{
+                    a4index=targetIndex-6;
+                    if(a4Processes[a4index].running==true){
+                        display.displayItem("<br>"+target+" is already running");
+                        targetIndex=10000;
+                    }
+               }
                 switch(targetIndex){
                     case 0:
                          Processes.listOfProcesses[targetIndex].running=true;
                          pRunning[targetIndex]=true;
+                         display.displayItem("<br> Process has fininished but is still running. Please use kill command to terminate process."); 
                          break;
                     case 1:
                         Processes.listOfProcesses[targetIndex].running=true;
                         pRunning[targetIndex]=true;
-                         break;
+                        display.displayItem("<br> Process has fininished but is still running. Please use kill command to terminate process.");
+                        break;
                     case 2:
                         Processes.listOfProcesses[targetIndex].running=true;
                         pRunning[targetIndex]=true;
-                         break;
+                        display.displayItem("<br> Process has fininished but is still running. Please use kill command to terminate process.");
+                        break;
                     case 3:
                         Processes.listOfProcesses[targetIndex].running=true;
                         pRunning[targetIndex]=true;
-                         break;
+                        display.displayItem("<br> Process has fininished but is still running. Please use kill command to terminate process.");
+                        break;
                     case 4:
                         Processes.listOfProcesses[targetIndex].running=true;
                         pRunning[targetIndex]=true;
-                         break;
+                        display.displayItem("<br> Process has fininished but is still running. Please use kill command to terminate process.");
+                        break;
                     case 5:
                         Processes.listOfProcesses[targetIndex].running=true;
                         pRunning[targetIndex]=true;
-                         break;
-                    case 6:
+                        display.displayItem("<br> Process has fininished but is still running. Please use kill command to terminate process.");
+                        break;
+                    case 6:   //graphics process                  
                     //call a4 process
                     //set a4 process running flag to true.
                     //Example on seeting running flag for graphicsProcess ->a4Processes[0].running=true          [0] because it is the first process in our a4Processes array
-                    break;
-                 }
-            display.displayItem("<br> Process has fininished but is still running. Please use kill command to terminate process.")     
-            }
-            break;
+                        break;
+                    case 7: //chracterReader
+                        break;
+                    case 8:
+                        a4Processes[a4index].running=true;
+                        pRunning[targetIndex]=true;
+                        a4Processes[a4index].angryMsgConverter1();
+                        display.displayItem("<br>Relevent data is now being piped to next process."+ "<br>Please start angryMsgConverter2, do not kill this process before then.");
+                        break;
+                    case 9:
+                        if(a4Processes[2].running==false){
+                            display.displayItem("<br>angryMsgConverter1 must be running to recieve needed data."+"<br>Please run angryMsgConverter1 first.");
+                        }else{
+                            a4Processes[a4index].running=true;
+                            pRunning[targetIndex]=true;
+                            a4Processes[a4index].angryMsgConverter2();
+                            display.displayItem("<br>Relevent data is now being piped to next process."+ "<br>Please start angryMsgConverter3, do not kill this process before then.");
+                        }
+                        break;
+                    case 10:
+                        if(a4Processes[3].running==false){
+                            display.displayItem("<br>angryMsgConverter2 must be running to recieve needed data."+"<br>Please run angryMsgConverter2 first.");
+                        }else{ 
+                            a4Processes[a4index].running=true;
+                            pRunning[targetIndex]=true;
+                            a4Processes[a4index].angryMsgConverter3();
+                            display.displayItem("<br> Process has finished succesfully. You may now kill this process.");
+                        }
+                        break;
+                    default:
+                       break;
+                 }    
+         }
+        break;
         case 6:                                                                      //kill command   
             targetIndex=ProcessNames.indexOf(target);
             if(targetIndex==-1){
                 display.badCommand(); 
-            }else if(Processes.listOfProcesses[targetIndex].running==false){
-                display.displayItem("<br>"+target+" is not running");
+            }else if(targetIndex<6){
+                if(Processes.listOfProcesses[targetIndex].running==false){
+                    display.displayItem("<br>"+target+" is not running");
+                }else{
+                    Processes.listOfProcesses[targetIndex].running=false;
+                    pRunning[targetIndex]=false;
+                    display.displayItem("<br>"+target+" has terminated. Now displaying results.");
+                    display.displayItem("<br>"+displayResults[targetIndex]);
+                }
             }else{
-                Processes.listOfProcesses[targetIndex].running=false;
-                pRunning[targetIndex]=false;
-                display.displayItem("<br>"+target+" has terminated. Now displaying results.");
-                display.displayItem("<br>"+displayResults[targetIndex]);
+                a4index=targetIndex-6;
+                if(a4Processes[a4index].running==false){
+                    display.displayItem("<br>"+target+" is not running");
+                }else{
+                    a4Processes[a4index].running=false;
+                    pRunning[targetIndex]=false;
+                    display.displayItem("<br>"+target+" has terminated. Now displaying results.");
+                    display.displayItem("<br>"+displayResults[targetIndex]);
+                }
             }
             break;
         case 7:                                                                      //cat command
