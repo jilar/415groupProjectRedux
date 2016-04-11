@@ -985,7 +985,7 @@ var Processes = {
         console.log(process.state);
         process.state = "Ready";
         process.programCounter++;
-//        for(var file of Directory.Files){
+//        for(int i=0; i<Directory.length;i++}
 //          if(file.isName(szFileName)) {
 //            process.variables.returnedFile = file;
 //            console.log(file);

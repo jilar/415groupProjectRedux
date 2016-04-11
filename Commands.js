@@ -6,7 +6,7 @@ var name;                                                                       
 var commandIndex;
 var targetIndex;
 var displayResults=[]                 
-var pRunning=[false,false,false,false,false,false,false,false,false,false,false,false];
+var pRunning=[false,false,false,false,false,false,false,false,false,false,false,false,false,false];
 
 
 function checkCommand(){
@@ -118,14 +118,17 @@ function doCommand(){
                     //Example on seeting running flag for graphicsProcess ->a4Processes[0].running=true          [0] because it is the first process in our a4Processes array
                         break;
                     case 7: //chracterReader
-                        break;
-                    case 8:
+                        a4Processes[a4index].running=true;
+                        pRunning[targetIndex]=true;
+                        a4Processes[a4index].characterTracker();
+                        display.displayItem("<br>Process has finished successfully. You may kill this process.");
+                    case 8://angryMsgConverter1
                         a4Processes[a4index].running=true;
                         pRunning[targetIndex]=true;
                         a4Processes[a4index].angryMsgConverter1();
                         display.displayItem("<br>Relevent data is now being piped to next process."+ "<br>Please start angryMsgConverter2, do not kill this process before then.");
                         break;
-                    case 9:
+                    case 9: //angryMsgConverter2
                         if(a4Processes[2].running==false){
                             display.displayItem("<br>angryMsgConverter1 must be running to recieve needed data."+"<br>Please run angryMsgConverter1 first.");
                         }else{
@@ -135,7 +138,7 @@ function doCommand(){
                             display.displayItem("<br>Relevent data is now being piped to next process."+ "<br>Please start angryMsgConverter3, do not kill this process before then.");
                         }
                         break;
-                    case 10:
+                    case 10: //angryMsgConverter3
                         if(a4Processes[3].running==false){
                             display.displayItem("<br>angryMsgConverter2 must be running to recieve needed data."+"<br>Please run angryMsgConverter2 first.");
                         }else{ 
@@ -145,6 +148,33 @@ function doCommand(){
                             display.displayItem("<br> Process has finished succesfully. You may now kill this process.");
                         }
                         break;
+                    case 11:
+                        break;
+                    case 12: // needsToSleep 
+                        a4Processes[a4index].running = true;
+                        pRunning[targetIndex] = true;
+                        var state = a4Processes[a4index].needsToSleep(0);
+                        if (state === 0)
+                        {
+                            a4Processes[a4index].sleeping = true;
+                            display.displayItem("<br>needsToSleep process started. needsToSleep process will sleep until anotherProcess is run.");                        
+                        }
+                        else if (state === 1)
+                        {
+                            a4Processes[a4index].sleeping = false;
+                        }
+                        break;
+                    case 13: // anotherProcess 
+                        a4Processes[a4index].running = true;
+                        pRunning[targetIndex] = true;
+                        var status = a4Processes[a4index].anotherProcess();
+                        display.displayItem("<br>anotherProcess process started. needsToSleep process should now wake up.");
+                        if (status === 1)
+                        {
+                            a4Processes[a4index-1].needsToSleep(1);
+                        }
+                        break;
+                        
                     default:
                        break;
                  }    
