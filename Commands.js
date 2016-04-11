@@ -157,18 +157,18 @@ function doCommand(){
                         if (state === 0)
                         {
                             a4Processes[a4index].sleeping = true;
-                            display.displayItem("<br>needsToSleep process started. needsToSleep process will sleep until anotherProcess is run.");                        
+                            display.displayItem("<br>needsToSleep process started. needsToSleep process will sleep until numberSummation is run.");                        
                         }
                         else if (state === 1)
                         {
                             a4Processes[a4index].sleeping = false;
                         }
                         break;
-                    case 13: // anotherProcess 
+                    case 13: // numberSummation
                         a4Processes[a4index].running = true;
                         pRunning[targetIndex] = true;
-                        var status = a4Processes[a4index].anotherProcess();
-                        display.displayItem("<br>anotherProcess process started. needsToSleep process should now wake up.");
+                        var status = a4Processes[a4index].numberSummation();
+                        display.displayItem("<br>numberSummation process started. needsToSleep process should now wake up.");
                         if (status === 1)
                         {
                             a4Processes[a4index-1].needsToSleep(1);

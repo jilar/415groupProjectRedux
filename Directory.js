@@ -5,7 +5,7 @@ var Directory = {
 //Directory of current files and processes
 var Directory0 = {
    filename:["bankBook.csv","ContactManager.csv","securityFile.csv","route.csv","vectorData.csv","statsFile.csv","DUMMYFILE.txt","characters.txt","niceMessage.txt",
-            "DUMMYFILE.txt","fileForAnotherProcess.csv"],
+            "DUMMYFILE.txt","numbers.csv"],
    content:["",                                                                                          //bank, file is created on startup
           "James,Butt,6649 N Blue Gum St,New Orleans,LA,70116,504-621-8927,jbutt@gmail.com\n"                          //contacts
           + "Josephine,Darakjy,4 B Blue Ridge Blvd,Brighton,MI,48116,810-292-9388,josephine_darakjy@darakjy.org\n"
@@ -192,5 +192,5 @@ var Directory0 = {
 
 var ProcessNames= [
     "bankCalculator", "contactManager", "securityUpdate", "shortestRoute", "addVectors", "calculateStats","graphicCreator","characterTracker",
-    "angryMsgConverter1","angryMsgConverter2","angryMsgConverter3","a4Process4","needsToSleep", "anotherProcess"
+    "angryMsgConverter1","angryMsgConverter2","angryMsgConverter3","a4Process4","needsToSleep", "numberSummation"
 ];

@@ -12,7 +12,7 @@
  *     4   | angryMsgConverter3 |   3c           | Jeffrey
  *     5   | 
  *     6   | needsToSleep       |   5a           | Paul
- *     7   | anotherProcess     |   5b           | Paul
+ *     7   | numberSummation    |   5b           | Paul
  *     8   | 
  *     9   | 
  *    10   | 
@@ -98,14 +98,12 @@ var a4Processes=[
         {
             // code 0 means to START the process (this code should be used when the process is NOT already sleeping)
             if (code === 0){
-                display.displayItem("<br> // Debug - value of pipes.pipeP5b_P5a is:" + pipes.pipeP5b_P5a);
-                // if have data in pipe from other process, can go ahead and finish this process
                 if (pipes.pipeP5b_P5a != ""){
                     var receivedSum = pipes.pipeP5b_P5a;
                     // reset the pipe
                     pipes.pipeP5b_P5a = "";
                     // display the success, for make win the program! Glorious!
-                    displayResults[11]="Data in pipe from anotherProcess to needsToSleep has been received; \nneedsToSleep is no longer sleeping (that's why you're seeing this messge--it is coming from needsToSleep). \nThe pipe has been cleared.";
+                    displayResults[12]="Data in pipe from numberSummation to needsToSleep has been received; \nneedsToSleep is no longer sleeping (that's why you're seeing this messge--it is coming from needsToSleep). \nThe pipe has been cleared.";
                     return 1; // exit code 1 means process had done its job successfully.
             }else{
 //                    display.displayItem("<br> // Debug - No data in pipe; will now sleep ..."); //debug
@@ -131,7 +129,7 @@ var a4Processes=[
                     // reset the pipe
                     pipes.pipeP5b_P5a = "";
                     // display the success, for make win the program! Glorious!
-                    displayResults[11]="Data in pipe from anotherProcess to needsToSleep has been received; \nneedsToSleep is no longer sleeping (that's why you're seeing this messge--it is coming from needsToSleep). \nThe pipe has been cleared.";
+                    displayResults[12]="Data in pipe from numberSummation to needsToSleep has been received; \nneedsToSleep is no longer sleeping (that's why you're seeing this messge--it is coming from needsToSleep). \nThe pipe has been cleared.";
                     return; // exit code 1 means process had done its job successfully.
                 }     
                 else
@@ -142,7 +140,6 @@ var a4Processes=[
             } // end else if code === 1
             else
             {
-                display.displayItem("<br> // Debug - You're not supposed to be here ...");
                 return;
             }                
         } // end function needsToSleep
@@ -163,8 +160,8 @@ var a4Processes=[
      */
     {
         running:false,
-        anotherProcess:function(){
-            var fileIndex= newOS.FS.Open("fileForAnotherProcess.csv");            
+        numberSummation:function(){
+            var fileIndex= newOS.FS.Open("numbers.csv");            
             var fContents=newOS.FS.Read(fileIndex);
             // fContents should now contain the string "1,2,3,4,5,6,7,8,9"
             var temp = new Array();
@@ -178,7 +175,8 @@ var a4Processes=[
 
             // send signal to the needsToSleep "process"
             pipes.pipeP5b_P5a = sum;
-            return 1; // means this process has finished processing 
+            displayResults[13] = "Sum of numbers from file numbers.csv: "+sum                  ; // Message to be displayed when kill command is used
+            return 1; // means this process has finished processing            
         } 
     }, // end process 5b
     
