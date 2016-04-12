@@ -9,11 +9,11 @@
  *     1   | angryMsgConverter1 |   3a           | Jeffrey 
  *     2   | angryMsgConverter2 |   3b           | Jeffrey
  *     3   | angryMsgConverter3 |   3c           | Jeffrey
- *     4   | 
+ *     4   | process4           |   4            | Xing               
  *     5   | needsToSleep       |   5a           | Paul
  *     6   | numberSummation    |   5b           | Paul
- *     7   | physics            |   8a           | Yansen Liu
- *     8   | addprocess        |   8b           | Yansen Liu  
+ *     7   | Physics            |   8a           | Yansen Liu
+ *     8   | addPhysicsTime     |   8b           | Yansen Liu  
  *    
  *      
  * @type Array
@@ -66,8 +66,90 @@ var a4Processes=[
         }
     },
     {
-        running:false,
-        process4:function(){                                           
+        running: false,
+        diningPhilosophers: function (ponderFactor,left,right,id) {
+////            Philosopher(); 
+////            Philo();
+//            var Thread = {
+////      var  left,right,id,ponderFactor;
+//                take: function () {
+//                     taken = false;
+//                    while (taken) {
+//                        wait();
+//                    }
+//                    taken = true;
+//                },
+//                drop: function () {
+//                    taken = false;
+//                    notifyAll();
+//                },
+//                pause: function () {
+//                    //var ponderFactor;
+//                    if (ponderFactor == 0) {
+//                        return;
+//                    }
+//                    var rand = Math.random(40);
+//                    TimeUnit.MILLISECONDS.sleep(rand.nextInt(ponderFactor * 250));
+//                },
+//                run: function () {
+//                    //var left, right, id;
+//   
+//                    try {
+//                   //var p="Philosopher"+id;
+//                  // while(true)
+//                        while (!Thread.interrupted()) {
+//                            //System.out.println(this + " " + "thinking");
+//                            display.displayItem("<br>thinking");                                 
+//                            pause();
+//                            // Philosopher becomes hungry
+//                            //System.out.println(this + " " + "grabbing right");
+//                            display.displayItem("<br>grab right");
+//                            right.take();
+//                            //System.out.println(this + " " + "grabbing left");
+//                            display.displayItem("<br>grab left");
+//                            left.take();
+//                            //System.out.println(this + " " + "eating");
+//                            display.displayItem("<br>eating");
+//                            pause();
+//                            right.drop();
+//                            left.drop();
+//                        }
+//                    }
+//                    catch (InterruptedException) {
+////                        //System.out.println(this + " " + "exiting via interrupt");
+//                        display.displayItem("<br>exit");
+//                    }
+//                   //return "Philosopher" + id;
+//                },
+//                deadLock: function () {
+//                    var ponder = 5;
+//                    if (args.length > 0) {
+//                        ponder = Integer.parseInt(args[0]);
+//                    }
+//                    var size = 5;
+//                    if (args.length > 1) {
+//                        size = Integer.parseInt(args[1]);
+//                    }​
+//                    var exec = Executors.newCachedThreadPool();
+//                    var Chopstick = [size];
+//                    for (i = 0; i < size; i++) {
+//                        Chopstick[i] = new Chopstick();
+//                    }
+//                    for (i = 0; i < size; i++) {
+//                        exec.execute(new Thread(
+//                                Chopstick[i], Chopstick[(i + 1) % size], i, ponder));
+//                    }
+//                    if (args.length == 3 && args[2].equals("timeout")) {
+//                        TimeUnit.SECONDS.sleep(5);
+//                    } else {
+//                        //System.out.println("Press 'Enter' to quit");
+//                        display.displayItem("<br>deadLock");
+//                        //System.in.read();
+//                    }
+//                    exec.shutdownNow();
+//                },
+//            }
+//              Thread.run();
         }
     },
     

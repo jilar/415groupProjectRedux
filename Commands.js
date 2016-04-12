@@ -145,6 +145,10 @@ function doCommand(){
                         }
                         break;
                     case 10:
+//                        a4Processes[a4index].running=true;    
+//                        pRunning[targetIndex]=true;
+//                        a4Processes[a4index].diningPhilosophers();
+                        display.displayItem("<br> Unfortantely this process is unfinished.");
                         break;
                     case 11: // needsToSleep 
                         a4Processes[a4index].running = true;
