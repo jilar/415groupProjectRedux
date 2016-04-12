@@ -5,33 +5,21 @@
  * 
  *   Index | ProcessName        | a4 Process No. | Author
  *   ------+--------------------+----------------+---------
- *     0   | 
- *     1   | characterTracker   |   2a           | Leanna
- *     2   | angryMsgConverter1 |   3a           | Jeffrey 
- *     3   | angryMsgConverter2 |   3b           | Jeffrey
- *     4   | angryMsgConverter3 |   3c           | Jeffrey
- *     5   | 
- *     6   | needsToSleep       |   5a           | Paul
- *     7   | numberSummation    |   5b           | Paul
- *     8   | 
- *     9   | 
- *    10   | 
- *    11   | 
- *    12   | 
+ *     0   | characterTracker   |   2a           | Leanna
+ *     1   | angryMsgConverter1 |   3a           | Jeffrey 
+ *     2   | angryMsgConverter2 |   3b           | Jeffrey
+ *     3   | angryMsgConverter3 |   3c           | Jeffrey
+ *     4   | 
+ *     5   | needsToSleep       |   5a           | Paul
+ *     6   | numberSummation    |   5b           | Paul
+ *     7   | physics            |   8a           | Yansen Liu
+ *     8   | addprocess        |   8b           | Yansen Liu  
  *    
  *      
  * @type Array
  */
 
 var a4Processes=[
-    {   running:false,
-        graphicCreator:function(){                                             //Example, changable for whoever does t
-        var file= newOS.FS.Open();                                             //Open function points to the correct index of file contents
-        var fContents=newOs.FS.Read(file)                                      //Read function retrieves the file contents for use
-        //do actual process stuff 
-        displayreults[6];
-        }
-    },
     {
         running:false,
         characterTracker:function(){
@@ -42,7 +30,7 @@ var a4Processes=[
             worker.onmessage = function (event) {                               // Performs another task when Web Worker sends data back
                 newOS.FS.Create("characterTracker.txt");                        // Creates a file called characterTracker.txt
                 newOS.FS.Write("characterTracker.txt", event.data);             // writes the data into characterTracker.txt
-                displayResults[7] = "File characterTracker.txt created. Open file using cat command to read message."; // Message to be displayed when kill command is used
+                displayResults[6] = "File characterTracker.txt created. Open file using cat command to read message."; // Message to be displayed when kill command is used
             }; 
         }
     },    
@@ -54,7 +42,7 @@ var a4Processes=[
             var changedText=fContents.replace(/\./g,"!");
             var changedText=changedText.replace(/love/g,"HATE");  
             pipes.pipeP3a_P3b=changedText;                                            //pipe from angryMsgConverter1 to angryMsgConverter2 now contains contents
-            displayResults[8]="Pipe from angryMsgConverter1 to angryMsgConverter2 has been cleared.";         //Message to be displayed when kill command is used
+            displayResults[7]="Pipe from angryMsgConverter1 to angryMsgConverter2 has been cleared.";         //Message to be displayed when kill command is used
         }
     },
     {
@@ -64,7 +52,7 @@ var a4Processes=[
             var upperCaseContent=pipeData.toUpperCase();
             pipes.pipeP3a_P3b="";
             pipes.pipe3b_3c=upperCaseContent;        
-            displayResults[9]="Pipe from angryMsgConverter2 to angryMsgConverter3 has been cleared."
+            displayResults[8]="Pipe from angryMsgConverter2 to angryMsgConverter3 has been cleared."
         }
     },
     {
@@ -74,7 +62,7 @@ var a4Processes=[
             newOS.FS.Create("meanMessage.txt"); 
             newOS.FS.Write("meanMessage.txt",meanMessage);
             pipes.pipe3b_3c="";
-            displayResults[10]="File meanMessage.txt created. Open file using cat command to read message."
+            displayResults[9]="File meanMessage.txt created. Open file using cat command to read message."
         }
     },
     {
@@ -103,7 +91,7 @@ var a4Processes=[
                     // reset the pipe
                     pipes.pipeP5b_P5a = "";
                     // display the success, for make win the program! Glorious!
-                    displayResults[12]="Data in pipe from numberSummation to needsToSleep has been received; \nneedsToSleep is no longer sleeping (that's why you're seeing this messge--it is coming from needsToSleep). \nThe pipe has been cleared.";
+                    displayResults[11]="Data in pipe from numberSummation to needsToSleep has been received; \nneedsToSleep is no longer sleeping (that's why you're seeing this messge--it is coming from needsToSleep). \nThe pipe has been cleared.";
                     return 1; // exit code 1 means process had done its job successfully.
             }else{
 //                    display.displayItem("<br> // Debug - No data in pipe; will now sleep ..."); //debug
@@ -129,7 +117,7 @@ var a4Processes=[
                     // reset the pipe
                     pipes.pipeP5b_P5a = "";
                     // display the success, for make win the program! Glorious!
-                    displayResults[12]="Data in pipe from numberSummation to needsToSleep has been received; \nneedsToSleep is no longer sleeping (that's why you're seeing this messge--it is coming from needsToSleep). \nThe pipe has been cleared.";
+                    displayResults[11]="Data in pipe from numberSummation to needsToSleep has been received; \nneedsToSleep is no longer sleeping (that's why you're seeing this messge--it is coming from needsToSleep). \nThe pipe has been cleared.";
                     return; // exit code 1 means process had done its job successfully.
                 }     
                 else
@@ -175,19 +163,35 @@ var a4Processes=[
 
             // send signal to the needsToSleep "process"
             pipes.pipeP5b_P5a = sum;
-            displayResults[13] = "Sum of numbers from file numbers.csv: "+sum                  ; // Message to be displayed when kill command is used
+            displayResults[12] = "Sum of numbers from file numbers.csv: "+sum                  ; // Message to be displayed when kill command is used
             return 1; // means this process has finished processing            
         } 
     }, // end process 5b
+    {    
+        running:false,
+        Physics:function(){
+            var file=newOS.FS.Open("FallingSpeed.txt");
+            var fcontent=newOS.FS.Read(file);
+            var data=fcontent.split(" ");
+            var g = data[0];
+            display.displayItem("<br> starting process addPhysicsTime")
+            display.displayItem("<br> addPhysicsTime finished and can be terminated.")
+            var time = a4Processes[8].addPhysicsTime();
+            var h = (g*(time*time))/2;
+            newOS.FS.Create("Result.txt");
+            newOS.FS.Write("Result.txt",h);
+            displayResults[13]="The item will fall "+h+" meters in "+time+" s. Result stores in Result.txt"
+        }
+    },
+    {
+        running:false,
+        addPhysicsTime:function(){
+            var i = Math.random();
+            displayResults[14]="Process Succesfully terminated."
+            return i;
+        }
+    },
     
-    
-    /**
-     * Process 6
-     */
-    
-    /**
-     * Process 7
-     */
     
 ];
 

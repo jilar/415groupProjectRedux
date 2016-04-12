@@ -55,6 +55,7 @@ function doCommand(){
             break;
         case 4:                                                                      //ps command
             var counter=0;
+            display.displayItem("<br> Currently running processes:");
             for(i=0; i<pRunning.length; i++){
               if(pRunning[i]==true){                           //need to add running variable to each process.
                   display.displayItem("<br>"+ProcessNames[i]);
@@ -112,24 +113,19 @@ function doCommand(){
                         pRunning[targetIndex]=true;
                         display.displayItem("<br> Process has fininished but is still running. Please use kill command to terminate process.");
                         break;
-                    case 6:   //graphics process                  
-                    //call a4 process
-                    //set a4 process running flag to true.
-                    //Example on seeting running flag for graphicsProcess ->a4Processes[0].running=true          [0] because it is the first process in our a4Processes array
-                        break;
-                    case 7: //chracterReader
+                    case 6: //chracterReader
                         a4Processes[a4index].running=true;
                         pRunning[targetIndex]=true;
                         a4Processes[a4index].characterTracker();
                         display.displayItem("<br>Process has finished successfully. You may kill this process.");
-                    case 8://angryMsgConverter1
+                    case 7://angryMsgConverter1
                         a4Processes[a4index].running=true;
                         pRunning[targetIndex]=true;
                         a4Processes[a4index].angryMsgConverter1();
                         display.displayItem("<br>Relevent data is now being piped to next process."+ "<br>Please start angryMsgConverter2, do not kill this process before then.");
                         break;
-                    case 9: //angryMsgConverter2
-                        if(a4Processes[2].running==false){
+                    case 8: //angryMsgConverter2
+                        if(a4Processes[1].running==false){
                             display.displayItem("<br>angryMsgConverter1 must be running to recieve needed data."+"<br>Please run angryMsgConverter1 first.");
                         }else{
                             a4Processes[a4index].running=true;
@@ -138,8 +134,8 @@ function doCommand(){
                             display.displayItem("<br>Relevent data is now being piped to next process."+ "<br>Please start angryMsgConverter3, do not kill this process before then.");
                         }
                         break;
-                    case 10: //angryMsgConverter3
-                        if(a4Processes[3].running==false){
+                    case 9: //angryMsgConverter3
+                        if(a4Processes[2].running==false){
                             display.displayItem("<br>angryMsgConverter2 must be running to recieve needed data."+"<br>Please run angryMsgConverter2 first.");
                         }else{ 
                             a4Processes[a4index].running=true;
@@ -148,9 +144,9 @@ function doCommand(){
                             display.displayItem("<br> Process has finished succesfully. You may now kill this process.");
                         }
                         break;
-                    case 11:
+                    case 10:
                         break;
-                    case 12: // needsToSleep 
+                    case 11: // needsToSleep 
                         a4Processes[a4index].running = true;
                         pRunning[targetIndex] = true;
                         var state = a4Processes[a4index].needsToSleep(0);
@@ -164,7 +160,7 @@ function doCommand(){
                             a4Processes[a4index].sleeping = false;
                         }
                         break;
-                    case 13: // numberSummation
+                    case 12: // numberSummation
                         a4Processes[a4index].running = true;
                         pRunning[targetIndex] = true;
                         var status = a4Processes[a4index].numberSummation();
@@ -174,7 +170,17 @@ function doCommand(){
                             a4Processes[a4index-1].needsToSleep(1);
                         }
                         break;
-                        
+                      case 13:
+                            a4Processes[a4index].running = true;
+                            pRunning[targetIndex] = true;
+                            a4Processes[a4index+1].running=true;
+                            pRunning[targetIndex+1]=true;
+                            a4Processes[a4index ].Physics();
+                            display.displayItem("<br>Process finished calculating the height of dropping item. You may terminate this Process.");  
+                        break; 
+                    case 14:
+                        display.displayItem("<br>addPhysicsTime is automatically spawned by Physics and is not meant to be started by the user. Please start Physics.")
+                        break;    
                     default:
                        break;
                  }    
