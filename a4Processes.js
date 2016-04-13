@@ -5,11 +5,11 @@
  * 
  *   Index | ProcessName        | a4 Process No. | Author
  *   ------+--------------------+----------------+---------
- *     0   | characterTracker   |   2a           | Leanna
+ *     0   | characterTracker   |   2            | Leanna
  *     1   | angryMsgConverter1 |   3a           | Jeffrey 
  *     2   | angryMsgConverter2 |   3b           | Jeffrey
  *     3   | angryMsgConverter3 |   3c           | Jeffrey
- *     4   | process4           |   4            | Xing               
+ *     4   | diningPhilosophers |   4            | Xing               
  *     5   | needsToSleep       |   5a           | Paul
  *     6   | numberSummation    |   5b           | Paul
  *     7   | Physics            |   8a           | Yansen Liu
@@ -67,11 +67,12 @@ var a4Processes=[
     },
     {
         running: false,
-        diningPhilosophers: function (ponderFactor,left,right,id) {
+        diningPhilosophers: function () {
 ////            Philosopher(); 
 ////            Philo();
 //            var Thread = {
 ////      var  left,right,id,ponderFactor;
+//
 //                take: function () {
 //                     taken = false;
 //                    while (taken) {
@@ -129,7 +130,8 @@ var a4Processes=[
 //                    var size = 5;
 //                    if (args.length > 1) {
 //                        size = Integer.parseInt(args[1]);
-//                    }​
+//                    }
+//
 //                    var exec = Executors.newCachedThreadPool();
 //                    var Chopstick = [size];
 //                    for (i = 0; i < size; i++) {
@@ -150,6 +152,78 @@ var a4Processes=[
 //                },
 //            }
 //              Thread.run();
+            var Thread = {
+                State: function () {
+                    thinking = 0;
+                    eating = 1;
+                    hungry = 2;
+                    //waiting = 3;
+                },
+                test: function (i) {
+                    var state = [5];
+                    if (state[i] == 2 && state[(i + 1) % 5] != 1 && state[(i + 4) % 5] != 1)
+                    {
+                        state[i] = 1;
+                        console.log("Philosopher " + i + " is eating");
+                    }
+                },
+                pickup: function (i) {
+                    var state = [5];
+                    state[i] = 2;
+                    console.log("Philosopher " + i + " is hungry");
+                    display.displayItem("<br>Philosopher " + i + " is hungry");
+                    Thread.test(i);
+//                    if (state[i] == 2 && state[(i + 1) % 5] != 1 && state[(i + 4) % 5] != 1)
+//                    {
+//                        state[i] = 1;
+//                        console.log("Philosopher " + i + " is eating");
+//                        display.displayItem("<br>Philosopher " + i + " is eating");
+//                    }
+                    if (state[i] == 2) {
+                        console.log("Philosopher " + i + " is waiting");
+                        display.displayItem("<br>Philosopher " + i + " is waiting");
+                    }
+                },
+                putdown: function (i) {
+                    var state = [5];
+                    if (state[i] == 1) {
+                        state[i] = 0;
+                        console.log("Philosopher " + i + " is thingking");
+                        display.displayItem("<br>Philosopher " + i + " is thingking");
+                        Thread.test((i + 1) % 5);
+                        Thread.test((i + 5) % 5);
+//                        if (state[(i + 1) % 5] == 2 && state[(((i + 1) % 5) + 1) % 5] != 1 && state[(((i + 1) % 5) + 4) % 5] != 1)
+//                    {
+//                        state[((i + 1) % 5)] = 1;
+//                        console.log("Philosopher " + ((i + 1) % 5) + " is eating");
+//                    } 
+//                           if (state[(i + 5) % 5] == 2 && state[(((i + 5) % 5) + 1) % 5] != 1 && state[(((i + 5) % 5) + 4) % 5] != 1)
+//                    {
+//                        state[((i + 5) % 5)] = 1;
+//                        console.log("Philosopher " + ((i + 5) % 5) + " is eating");
+//                    }      
+                    }
+                },
+                run: function ( ) {
+                    for (var i = 0; i < 5; i++) {
+                        Thread.pickup(i);
+                    }
+                    for (var i = 0; i < 5; i++) {
+                        Thread.putdown(i);
+                    }
+                    Thread.deadLock();
+                },
+                deadLock: function () {
+                    var state = [5];
+                    state[i] = 2;
+                    if (state[i] == 2) {
+                        display.displayItem("<br>Deadlock");
+                        console.log("deadlock");
+                    }
+                },
+            }
+            Thread.run();
+            displayResults[10]="Process reached deadlocked state, process terminated."
         }
     },
     

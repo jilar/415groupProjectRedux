@@ -117,7 +117,7 @@ function doCommand(){
                         a4Processes[a4index].running=true;
                         pRunning[targetIndex]=true;
                         a4Processes[a4index].characterTracker();
-                        display.displayItem("<br>Process has finished successfully. You may kill this process.");
+                        display.displayItem("<br>Process has finished successfully. You may kill this process to show result.");
                     case 7://angryMsgConverter1
                         a4Processes[a4index].running=true;
                         pRunning[targetIndex]=true;
@@ -141,14 +141,14 @@ function doCommand(){
                             a4Processes[a4index].running=true;
                             pRunning[targetIndex]=true;
                             a4Processes[a4index].angryMsgConverter3();
-                            display.displayItem("<br> Process has finished succesfully. You may now kill this process.");
+                            display.displayItem("<br> Process has finished succesfully. You may now kill this process to show result.");
                         }
                         break;
                     case 10:
-//                        a4Processes[a4index].running=true;    
-//                        pRunning[targetIndex]=true;
-//                        a4Processes[a4index].diningPhilosophers();
-                        display.displayItem("<br> Unfortantely this process is unfinished.");
+                        a4Processes[a4index].running=true;    
+                        pRunning[targetIndex]=true;
+                        a4Processes[a4index].diningPhilosophers();
+                        display.displayItem("<br> This process is still running however, please kill this process to stop.");
                         break;
                     case 11: // needsToSleep 
                         a4Processes[a4index].running = true;
