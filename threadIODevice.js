@@ -2,46 +2,44 @@ var openFiles = [];
 
 var threadIODevice = {
     
-    addFile : function(file){
+    addFile: function(file){
         if(Directory0.filename.indexOf(file)==-1){
-            display.displayItem("<br>file is not in directory");
+            display.displayItem("<br>>file is not in directory");
         }else{
             openFiles.push(file);
-            display.displayItem("<br>" + file + " add to thread device")
+            display.displayItem("<br>>" + file + " add to thread device")
         }
     },
 
     removeFile: function(file){
         if(openFiles.indexOf(file)==-1){
-            display.displayItem("<br>file is not in thread device")
+            display.displayItem("<br>>file is not in thread device")
         }else{
             var index = openFiles.indexOf(file);
             openFiles.splice(index, 1);
-            display.displayItem("<br>" + file + " is removed from thread device")
+            display.displayItem("<br>>" + file + " is removed from thread device")
         }
     },
 
     listFile: function(){
         if(openFiles.length ==0){
-            display.displayItem("<br>no file in thread device, use add <filename> command to add file");
+            display.displayItem("<br>>no file in thread device, use add <filename> command to add file");
         }else{
             display.displayItem("<br>");
-            for each (var file in openFiles){
+            for(var file of openFiles){
                 display.displayItem(file+"<tab>");
             }
         }
     },
 
-    process: function(){ //can add argument later if more command need
-        //if(command === "cat"){
-            if(openFiles.length ==0){
-                display.displayItem("<br>no file in thread device, use add <filename> command to add file");
-            }else{
-                for each (var file in openFiles){
-                    catFile(file);
-                }
+    cat: function(){
+        if(openFiles.length ==0){
+            display.displayItem("<br>no file in thread device, use add <filename> command to add file");
+        }else{
+            for(var file of openFiles){
+                catFile(file);
             }
-        //}
+        }
     }
 }
 
@@ -52,4 +50,3 @@ function catFile(file){
     display.displayItem("<br>"+ Directory0.content[Index]);
     display.displayItem("<br>");
 }
-//more commend if need

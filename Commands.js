@@ -10,6 +10,13 @@ var pRunning=[false,false,false,false,false,false,false,false,false,false,false,
 
 
 function checkCommand(){
+    if(a4Processes[9].running == true){
+        commandIndex=commandList.indexOf(command);
+        var flag = threadIODeviceCommand();
+        if(flag == true){ 
+            return;
+        }
+    }
     if(commandList.indexOf(command)==-1){
  //       document.getElementById("console").innerHTML +="</br> Debug "+command;                  //debugger statement
         display.badCommand();                       //user input not in command array (Invalid Command)...display command was not recofnized
@@ -184,7 +191,11 @@ function doCommand(){
                         break; 
                     case 14:
                         display.displayItem("<br>addPhysicsTime is automatically spawned by Physics and is not meant to be started by the user. Please start Physics.")
-                        break;    
+                        break;
+                    case 15:    
+                       a4Processes[a4index].running = true;
+                        pRunning[targetIndex] = true;
+                        a4Processes[a4index].commandGroupFile();
                     default:
                        break;
                  }    
@@ -250,4 +261,30 @@ function doCommand(){
             display.displayItem(manual);                          
             break;    
     }
+}
+
+function threadIODeviceCommand(){
+    switch(command){
+        case "cat":
+            threadIODevice.cat();
+            return true;
+            break;
+        case "list":
+            threadIODevice.listFile();
+            return true;
+            break;
+        case "add":
+            threadIODevice.addFile(target);
+            return true;
+            break;
+        case "remove":
+            threadIODevice.removeFile(target);
+            return true;
+            break;
+        default:
+            return false;
+            break;
+            
+    }
+    return false;
 }

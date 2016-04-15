@@ -192,5 +192,5 @@ var Directory0 = {
 
 var ProcessNames= [
     "bankCalculator", "contactManager", "securityUpdate", "shortestRoute", "addVectors", "calculateStats","characterTracker",
-    "angryMsgConverter1","angryMsgConverter2","angryMsgConverter3","diningPhilosophers","needsToSleep", "numberSummation","Physics","addPhysicsTime"
+    "angryMsgConverter1","angryMsgConverter2","angryMsgConverter3","diningPhilosophers","needsToSleep", "numberSummation","Physics","addPhysicsTime","commandGroupFile"
 ];
