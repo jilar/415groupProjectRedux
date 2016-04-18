@@ -4,7 +4,8 @@ var Directory = {
 
 //Directory of current files and processes
 var Directory0 = {
-   filename:["bankBook.csv","ContactManager.csv","securityFile.csv","route.csv","vectorData.csv","statsFile.csv"],
+   filename:["bankBook.csv","ContactManager.csv","securityFile.csv","route.csv","vectorData.csv","statsFile.csv","characters.txt","niceMessage.txt",
+            "DUMMYFILE.txt","numbers.csv","FallingSpeed.txt"],
    content:["",                                                                                          //bank, file is created on startup
           "James,Butt,6649 N Blue Gum St,New Orleans,LA,70116,504-621-8927,jbutt@gmail.com\n"                          //contacts
           + "Josephine,Darakjy,4 B Blue Ridge Blvd,Brighton,MI,48116,810-292-9388,josephine_darakjy@darakjy.org\n"
@@ -176,11 +177,20 @@ var Directory0 = {
          "0.55\n" + "1.45\n" + "0.14\n" + "4.47\n" + "1.20\n" + "3.50\n" +
          "5.02\n" + "4.67\n" + "5.22\n" + "2.69\n" + "3.98\n" + "3.17\n" +
          "3.03\n" + "2.21\n" + "0.69\n" + "4.47\n" + "3.31\n" + "1.17\n" +
-         "0.76\n" + "1.17\n" + "1.57\n" + "2.62\n" + "1.66\n" + "2.05\n"]
+         "0.76\n" + "1.17\n" + "1.57\n" + "2.62\n" + "1.66\n" + "2.05\n",                                                                        //graphicCreator
+         "AJSNSFSDJNVajnnjsdnfalsdcvNCAkljn341235RF9VNI932R539!>'.[,[]\;,;][.,;,;.23r4",    //characterTracker                                                    
+         "I would love it if you had a nice day today. I really love you. I hope you get this message because I would love to talk with you more.", //niceMessage
+         "Empty :(",                                                                        //a4process4
+         "1,2,3,4,5,6,7,8,9",                                                              // numbers.csv
+         "9.8 "                                                                              //FallingSpeed.txt
+         
+     ]
+         
 };
 
 
 
 var ProcessNames= [
-    "bankCalculator", "contactManager", "securityUpdate", "shortestRoute", "addVectors", "calculateStats"
+    "bankCalculator", "contactManager", "securityUpdate", "shortestRoute", "addVectors", "calculateStats","characterTracker",
+    "angryMsgConverter1","angryMsgConverter2","angryMsgConverter3","diningPhilosophers","needsToSleep", "numberSummation","Physics","addPhysicsTime","commandGroupFile"
 ];
