@@ -14,6 +14,7 @@
  *     6   | numberSummation    |   5b           | Paul
  *     7   | Physics            |   8a           | Yansen Liu
  *     8   | addPhysicsTime     |   8b           | Yansen Liu  
+ *     9   | commandGroupFile   |   9a           | Zi  
  *    
  *      
  * @type Array
@@ -347,6 +348,17 @@ var a4Processes=[
             return i;
         }
     },
+    {   
+        running:false,
+        commandGroupFile: function(){
+            display.displayItem("<br> This Process acts like An IO Device where every file instance that is opened creates a new thread to process a command that is passed .");
+            display.displayItem("<br> Process is running. To end this process, use kill command");
+            display.displayItem("<br> Some CLI command will not run properly until this process is killed.")
+            display.displayItem("<br>device command: add \<\ffilename\>\ , remove \<\ffilename\>\ , cat, list");
+            threadIODevice.listFile();
+            displayResults[15]= "Process is terminated."
+        }
+    }   
     
     
 ];
