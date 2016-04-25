@@ -1,13 +1,13 @@
 //Commands
 var command;                                                                                    //global variable acts to            
-var commandList=["clear","dir","delete", "copy", "ps", "start", "kill", "cat" ,"ren","man"];    //list of commands
+var commandList=["clear","dir","delete", "copy", "ps", "start", "kill", "cat" ,"ren","man","cd"];    //list of commands
 var target;                                                                                     //target file/process for commands which ask for a second arguement
 var name;                                                                                        //for file name change
 var commandIndex;
 var targetIndex;
 var displayResults=[]                 
 var pRunning=[false,false,false,false,false,false,false,false,false,false,false,false,false,false];
-
+var cDirectory="C";
 
 function checkCommand(){
     if(a4Processes[9].running == true){
@@ -31,13 +31,27 @@ function doCommand(){
         case 0:                                                                      //clear command
             display.clearDisplay();
             break;
-        case 1:                                                                      //dir command
+        case 1:
+            display.displayItem("<br>Folders/Files inside "+cDirectory+":");
             display.displayItem("<br>");
-            for(i=0; i<Directory0.filename.length; i++){
-                display.displayItem(Directory0.filename[i]);
-            }
+            switch(cDirectory){
+                case "Directory0":   
+                for(i=0; i<C[0].filename.length; i++){
+                    display.displayItem(C[0].filename[i]);
+                }
+                break;
+                case "Directory1": 
+                for(i=0; i<C[1].filename.length; i++){
+                display.displayItem(C[1].filename[i]);
+                }
+                break;
+                case "C":
+                    for(i=0; i<C[2].filename.length; i++){
+                        display.displayItem(C[2].filename[i]);
+                    }
+            }    
             break;
-        case 2:                                                                      //delete command
+        case 2:                                                               //delete command
             if(Directory0.filename.indexOf(target)==-1){
                 display.badCommand(); 
             }else{
@@ -257,8 +271,39 @@ function doCommand(){
                         "</br>kill&emsp;&emsp;&thinsp;-&emsp;Terminate a running process and display its resulting computation. Enter command as follows: kill \<\fprocessname>"+
                         "</br>cat&emsp;&emsp;&thinsp;&thinsp;-&emsp;Displays contents of specified file. Enter command as follows: cat \<\ffilename\>"+
                         "</br>ren&emsp;&emsp;&thinsp;&thinsp;-&emsp;Renames specified file. Enter command as follows: ren \<\foldfilename\> \<\fnewfilename\>"+
-                        "</br>man&emsp;&ensp;&thinsp;&thinsp;-&emsp;The command manual, you're using it right now silly.";
+                        "</br>man&emsp;&ensp;&thinsp;&thinsp;-&emsp;The command manual, you're using it right now silly."+
+                        "</br>cd&emsp;&emsp;&thinsp;&thinsp;&thinsp;-&emsp;Change Directory. Enter command as follows: cd \<\fdirectoryname\>\n\
+                                 . To go back to C directory enter command as follows: cd ..";
+  
             display.displayItem(manual);                          
+            break;    
+        //cd command    
+        case 10:
+            
+            if(target==".." && cDirectory!="C"){
+                cDirectory="C";
+                display.displayItem("<br>New directory: "+cDirectory);
+                
+            }        
+            else if(Directories.indexOf(target)==-1){
+                display.badCommand(); 
+            }
+            else if(cDirectory==target){
+                display.displayItem("<br>You are already in: "+cDirectory);  
+            }
+            else if(target=="C"){
+                  display.badCommand(); 
+                
+            }else if(target==".."){
+               cDirectory="C";
+               display.displayItem("<br>You are already in: "+cDirectory); 
+                
+            }
+            else {
+                cDirectory=target;
+                display.displayItem("<br>New directory: "+cDirectory);  
+            }
+            
             break;    
     }
 }
@@ -283,8 +328,7 @@ function threadIODeviceCommand(){
             break;
         default:
             return false;
-            break;
-            
+            break;       
     }
     return false;
 }

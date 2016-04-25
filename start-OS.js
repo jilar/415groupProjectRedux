@@ -47,7 +47,7 @@ window.onload = function(){
                 szFileContents = szFileContents + aryBankBook[k][0] + ":";
                 szFileContents = szFileContents + aryBankBook[k][1] + ",\n";
               }
-              Directory0.content[0]=szFileContents;
+              C[O].content[0]=szFileContents;
   }
   function getTransactionType(){                                                  //createBank helper function
             var nTransactionType = Math.floor(Math.random() * 4.0);
