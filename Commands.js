@@ -51,28 +51,66 @@ function doCommand(){
                     }
             }    
             break;
-        case 2:                                                               //delete command
-            if(Directory0.filename.indexOf(target)==-1){
-                display.badCommand(); 
-            }else{
-                targetIndex=Directory0.filename.indexOf(target);
-                Directory0.filename.splice(targetIndex, 1);
-                Directory0.content.splice(targetIndex, 1);
-                display.displayItem("<br>"+target+" deleted from file Directory");
+        case 2:                                                         //delete command
+            if (cDirectory=="Directory0"){
+                var targetIndex=C[0].filename.indexOf(target);
+                if(targetIndex==-1){
+                    display.badCommand(); 
+                }else{
+                    C[0].filename.splice(targetIndex, 1);
+                    C[0].content.splice(targetIndex, 1);
+                    display.displayItem("<br>"+target+" deleted from Directory0");
+                }    
+            }else if (cDirectory=="Directory1"){
+                var targetIndex=C[1].filename.indexOf(target);
+                if(targetIndex==-1){
+                    display.badCommand(); 
+                }else{
+                    C[1].filename.splice(targetIndex, 1);
+                    C[1].content.splice(targetIndex, 1);
+                    display.displayItem("<br>"+target+" deleted from Directory1");
+                }
+            }else{                                                                     //inside C directory
+                var targetIndex=C[2].filename.indexOf(target);
+                if(targetIndex==-1){
+                    display.badCommand(); 
+                }else{
+                    display.displayItem("<br>You can not delete Directory0/Directory1!"); 
+                }        
             }
             break;
         case 3:                                                                      //copy command
-             if(Directory0.filename.indexOf(target)==-1){
-                display.badCommand();
-            }else if(name==""){
-                display.badCommand(); 
-            }
-            else{
-                targetIndex=Directory0.filename.indexOf(target);
-                Directory0.filename.push(name);
-                Directory0.content.push(Directory0.content[targetIndex]);
-                display.displayItem("<br> File "+ name+" added to directory" );
-            }
+             if (cDirectory=="Directory0"){
+                if(C[0].filename.indexOf(target)==-1){
+                    display.badCommand();
+                }else if(name==""){
+                    display.badCommand(); 
+                }else{
+                    targetIndex=C[0].filename.indexOf(target);
+                    C[0].filename.push(name);
+                    C[0].content.push(C[0].content[targetIndex]);
+                    display.displayItem("<br> File "+ name+" added to "+cDirectory);
+                }
+            }else if (cDirectory=="Directory1"){
+                if(C[1].filename.indexOf(target)==-1){
+                    display.badCommand();
+                }else if(name==""){
+                    display.badCommand(); 
+                }else{
+                    targetIndex=C[1].filename.indexOf(target);
+                    C[1].filename.push(name);
+                    C[1].content.push(C[1].content[targetIndex]);
+                    display.displayItem("<br> File "+ name+" added to "+cDirectory);
+                    }
+            }else{
+                if(C[2].filename.indexOf(target)==-1){
+                    display.badCommand();
+                }else if(name==""){
+                    display.badCommand(); 
+                }else{
+                    display.displayItem("<br>You can not copy directories!");
+                }    
+            }    
             break;
         case 4:                                                                      //ps command
             var counter=0;
