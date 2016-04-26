@@ -69,6 +69,7 @@ var newOS={
             }
             return this.spaceMultiplier * bytes;
         },
+        
         initializeSpace: function ()
         {
 //            display.displayItem("<br> // Debug - spaceUsedTest = " + newOS.FS.spaceUsedTest); //debug
@@ -81,6 +82,12 @@ var newOS={
 //            display.displayItem("<br> // Debug - totalSpace = " + this.totalSize); //debug
 //            display.displayItem("<br> // Debug - spaceUsed = " + this.spaceUsed); //debug
 //            display.displayItem("<br> // Debug - spaceFree = " + this.spaceFree); //debug
+        },
+        
+        updateSpace: function()
+        {
+            this.spaceUsed = this.roughSizeOfObject(C);
+            this.spaceFree = this.totalSize - this.spaceUsed;
         },
         
         
@@ -118,4 +125,3 @@ var newOS={
         }
     }
 };
-

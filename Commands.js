@@ -31,7 +31,7 @@ function doCommand(){
         case 0:                                                                      //clear command
             display.clearDisplay();
             break;
-        case 1:
+        case 1:                                                                  //dir command
             display.displayItem("<br>Folders/Files inside "+cDirectory+":");
             display.displayItem("<br>");
             switch(cDirectory){
@@ -467,8 +467,8 @@ function doCommand(){
             display.displayItem("<br>Used disk space: " + newOS.FS.spaceUsed + " kilobytes.");
             display.displayItem("<br>Available disk space: " + newOS.FS.spaceFree + " kilobytes.");            
             break;
-        newOS.FS.initializeSpace();    
     }
+    newOS.FS.updateSpace(); // moved this here (from line 470) -Paul  
 }
 
 function threadIODeviceCommand(){
