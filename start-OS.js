@@ -8,6 +8,10 @@ window.onload = function(){
     Processes.generateListOfProcesses();
 
     var everyProcessStopped = false;
+    
+    // initialize storage space variables (Assignment 5, Paul)
+    //display.displayItem("<br> // Debug - Will now initialize space ..."); //debug
+        newOS.FS.initializeSpace();
 
     while (!everyProcessStopped) {
       everyProcessStopped = Processes.listOfProcesses.every(function(element){         
@@ -47,7 +51,7 @@ window.onload = function(){
                 szFileContents = szFileContents + aryBankBook[k][0] + ":";
                 szFileContents = szFileContents + aryBankBook[k][1] + ",\n";
               }
-              C[O].content[0]=szFileContents;
+              C[0].content[0]=szFileContents;
   }
   function getTransactionType(){                                                  //createBank helper function
             var nTransactionType = Math.floor(Math.random() * 4.0);
