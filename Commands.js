@@ -6,7 +6,7 @@ var name;                                                                       
 var commandIndex;
 var targetIndex;
 var displayResults=[]                 
-var pRunning=[false,false,false,false,false,false,false,false,false,false,false,false,false,false];
+var pRunning=[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false];
 var cDirectory="C";
 
 function checkCommand(){
@@ -303,7 +303,17 @@ function doCommand(){
                        a4Processes[a4index].running = true;
                         pRunning[targetIndex] = true;
                         a4Processes[a4index].commandGroupFile();
-                    default:
+                    case 16:
+                       if(cDirectory=="Directory1"){ 
+                            a4Processes[a4index].running = true;
+                             pRunning[targetIndex] = true;
+                            a4Processes[a4index].copyfile();
+                            display.displayItem("file copy finished")
+                        }else{
+                            display.displayItem("<br>You must be in Directory1 to start this process!");
+                        }      
+                       break;    
+                    default:    
                        break;
                  }    
          }
@@ -415,7 +425,8 @@ function doCommand(){
                         "</br>ren&emsp;&emsp;&thinsp;&thinsp;-&emsp;Renames specified file. Enter command as follows: ren \<\foldfilename\> \<\fnewfilename\>"+
                         "</br>man&emsp;&ensp;&thinsp;&thinsp;-&emsp;The command manual, you're using it right now silly."+
                         "</br>cd&emsp;&emsp;&thinsp;&thinsp;&thinsp;-&emsp;Change Directory. Enter command as follows: cd \<\fdirectoryname\>\n\
-                                 . To go back to C directory enter command as follows: cd ..";
+                                 . To go back to C directory enter command as follows: cd .."+
+                        "</br>df&emsp;&emsp;&thinsp;&thinsp;&thinsp;-&emsp;Lists memory information."                                                                                                                     
   
             display.displayItem(manual);                          
             break;    
