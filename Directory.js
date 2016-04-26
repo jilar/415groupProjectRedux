@@ -208,7 +208,7 @@ var C = [
 
 var ProcessNames= [
     "bankCalculator", "contactManager", "securityUpdate", "shortestRoute", "addVectors", "calculateStats","characterTracker",
-    "angryMsgConverter1","angryMsgConverter2","angryMsgConverter3","diningPhilosophers","needsToSleep", "numberSummation","Physics","addPhysicsTime","commandGroupFile"
+    "angryMsgConverter1","angryMsgConverter2","angryMsgConverter3","diningPhilosophers","needsToSleep", "numberSummation","Physics","addPhysicsTime","commandGroupFile","copyfile"
 ];
 
 var Directories=["Directory1","Directory0","C"];

@@ -1,7 +1,7 @@
 //call functions from our newOS to open files guys!
 
 /**
- * Processes for Assignment 4.
+ * Processes for Assignment 4 onwards.
  * 
  *   Index | ProcessName        | a4 Process No. | Author
  *   ------+--------------------+----------------+---------
@@ -15,7 +15,7 @@
  *     7   | Physics            |   8a           | Yansen Liu
  *     8   | addPhysicsTime     |   8b           | Yansen Liu  
  *     9   | commandGroupFile   |   9a           | Zi  
- *    
+ *    10   | copyfile           |   A5 process4  | Yansen Liu
  *      
  * @type Array
  */
@@ -358,8 +358,38 @@ var a4Processes=[
             threadIODevice.listFile();
             displayResults[15]= "Process is terminated."
         }
-    }   
-    
+    },
+    {
+        running:false,
+        copyfile: function(){
+            var filename = "numbers.csv"
+            var file;
+            var newfilename;
+            var FileContents;
+            var Num = 1;
+            var filesize;
+            var spaceFree = newOS.FS.totalSize - newOS.FS.spaceUsed;
+            var filesize = newOS.FS.roughSizeOfObject(filename);
+            var spaceFreeAfter;
+            for(i=0; i<Num; i++){
+                if(filesize<=spaceFree){
+                    file = newOS.FS.Open(filename); 
+                    FileContents = newOS.FS.Read(file);
+                    newfilename = filename+Num;
+                    newOS.FS.Create(newfilename);
+                    newOS.FS.Write(newfilename,FileContents);
+                    Num++;
+                    spaceFreeAfter = spaceFree - filesize;
+                    spaceFree = spaceFreeAfter;
+                    display.displayItem("file copied, FreeSpace is: "+spaceFreeAfter);
+                }else{
+                    Num = 0;
+                    display.displayItem("<br>Ran out of space.");
+                }               
+            }
+            displayResults[16]="File successfully copied."
+        }   
+    }
     
 ];
 
