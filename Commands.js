@@ -1,13 +1,13 @@
 //Commands
 var command;                                                                                    //global variable acts to            
-var commandList=["clear","dir","delete", "copy", "ps", "start", "kill", "cat" ,"ren","man"];    //list of commands
+var commandList=["clear","dir","delete", "copy", "ps", "start", "kill", "cat" ,"ren","man","cd","df"];    //list of commands
 var target;                                                                                     //target file/process for commands which ask for a second arguement
 var name;                                                                                        //for file name change
 var commandIndex;
 var targetIndex;
 var displayResults=[]                 
-var pRunning=[false,false,false,false,false,false,false,false,false,false,false,false,false,false];
-
+var pRunning=[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false];
+var cDirectory="C";
 
 function checkCommand(){
     if(a4Processes[9].running == true){
@@ -31,34 +31,86 @@ function doCommand(){
         case 0:                                                                      //clear command
             display.clearDisplay();
             break;
-        case 1:                                                                      //dir command
+        case 1:                                                                  //dir command
+            display.displayItem("<br>Folders/Files inside "+cDirectory+":");
             display.displayItem("<br>");
-            for(i=0; i<Directory0.filename.length; i++){
-                display.displayItem(Directory0.filename[i]);
-            }
+            switch(cDirectory){
+                case "Directory0":   
+                for(i=0; i<C[0].filename.length; i++){
+                    display.displayItem(C[0].filename[i]);
+                }
+                break;
+                case "Directory1": 
+                for(i=0; i<C[1].filename.length; i++){
+                display.displayItem(C[1].filename[i]);
+                }
+                break;
+                case "C":
+                    for(i=0; i<C[2].filename.length; i++){
+                        display.displayItem(C[2].filename[i]);
+                    }
+            }    
             break;
-        case 2:                                                                      //delete command
-            if(Directory0.filename.indexOf(target)==-1){
-                display.badCommand(); 
-            }else{
-                targetIndex=Directory0.filename.indexOf(target);
-                Directory0.filename.splice(targetIndex, 1);
-                Directory0.content.splice(targetIndex, 1);
-                display.displayItem("<br>"+target+" deleted from file Directory");
+        case 2:                                                         //delete command
+            if (cDirectory=="Directory0"){
+                var targetIndex=C[0].filename.indexOf(target);
+                if(targetIndex==-1){
+                    display.badCommand(); 
+                }else{
+                    C[0].filename.splice(targetIndex, 1);
+                    C[0].content.splice(targetIndex, 1);
+                    display.displayItem("<br>"+target+" deleted from Directory0");
+                }    
+            }else if (cDirectory=="Directory1"){
+                var targetIndex=C[1].filename.indexOf(target);
+                if(targetIndex==-1){
+                    display.badCommand(); 
+                }else{
+                    C[1].filename.splice(targetIndex, 1);
+                    C[1].content.splice(targetIndex, 1);
+                    display.displayItem("<br>"+target+" deleted from Directory1");
+                }
+            }else{                                                                     //inside C directory
+                var targetIndex=C[2].filename.indexOf(target);
+                if(targetIndex==-1){
+                    display.badCommand(); 
+                }else{
+                    display.displayItem("<br>You can not delete Directory0/Directory1!"); 
+                }        
             }
             break;
         case 3:                                                                      //copy command
-             if(Directory0.filename.indexOf(target)==-1){
-                display.badCommand();
-            }else if(name==""){
-                display.badCommand(); 
-            }
-            else{
-                targetIndex=Directory0.filename.indexOf(target);
-                Directory0.filename.push(name);
-                Directory0.content.push(Directory0.content[targetIndex]);
-                display.displayItem("<br> File "+ name+" added to directory" );
-            }
+             if (cDirectory=="Directory0"){
+                if(C[0].filename.indexOf(target)==-1){
+                    display.badCommand();
+                }else if(name==""){
+                    display.badCommand(); 
+                }else{
+                    targetIndex=C[0].filename.indexOf(target);
+                    C[0].filename.push(name);
+                    C[0].content.push(C[0].content[targetIndex]);
+                    display.displayItem("<br> File "+ name+" added to "+cDirectory);
+                }
+            }else if (cDirectory=="Directory1"){
+                if(C[1].filename.indexOf(target)==-1){
+                    display.badCommand();
+                }else if(name==""){
+                    display.badCommand(); 
+                }else{
+                    targetIndex=C[1].filename.indexOf(target);
+                    C[1].filename.push(name);
+                    C[1].content.push(C[1].content[targetIndex]);
+                    display.displayItem("<br> File "+ name+" added to "+cDirectory);
+                    }
+            }else{
+                if(C[2].filename.indexOf(target)==-1){
+                    display.badCommand();
+                }else if(name==""){
+                    display.badCommand(); 
+                }else{
+                    display.displayItem("<br>You can not copy directories!");
+                }    
+            }    
             break;
         case 4:                                                                      //ps command
             var counter=0;
@@ -91,104 +143,159 @@ function doCommand(){
                }
                 switch(targetIndex){
                     case 0:
-                         Processes.listOfProcesses[targetIndex].running=true;
-                         pRunning[targetIndex]=true;
-                         display.displayItem("<br> Process has fininished but is still running. Please use kill command to terminate process."); 
+                         if(cDirectory=="Directory0"){
+                            Processes.listOfProcesses[targetIndex].running=true;
+                            pRunning[targetIndex]=true;
+                            display.displayItem("<br> Process has fininished but is still running. Please use kill command to terminate process."); 
+                        }else{
+                            display.displayItem("<br>You must be in Directory0 to start this process!");
+                        }
                          break;
                     case 1:
-                        Processes.listOfProcesses[targetIndex].running=true;
-                        pRunning[targetIndex]=true;
-                        display.displayItem("<br> Process has fininished but is still running. Please use kill command to terminate process.");
+                        if(cDirectory=="Directory0"){
+                            Processes.listOfProcesses[targetIndex].running=true;
+                            pRunning[targetIndex]=true;
+                            display.displayItem("<br> Process has fininished but is still running. Please use kill command to terminate process.");
+                        }else{
+                            display.displayItem("<br>You must be in Directory0 to start this process!");
+                        }
                         break;
                     case 2:
-                        Processes.listOfProcesses[targetIndex].running=true;
-                        pRunning[targetIndex]=true;
-                        display.displayItem("<br> Process has fininished but is still running. Please use kill command to terminate process.");
+                        if(cDirectory=="Directory0"){
+                            Processes.listOfProcesses[targetIndex].running=true;
+                            pRunning[targetIndex]=true;
+                            display.displayItem("<br> Process has fininished but is still running. Please use kill command to terminate process.");
+                        }else{
+                            display.displayItem("<br>You must be in Directory0 to start this process!");
+                        }
                         break;
                     case 3:
-                        Processes.listOfProcesses[targetIndex].running=true;
-                        pRunning[targetIndex]=true;
-                        display.displayItem("<br> Process has fininished but is still running. Please use kill command to terminate process.");
+                        if(cDirectory=="Directory0"){
+                            Processes.listOfProcesses[targetIndex].running=true;
+                            pRunning[targetIndex]=true;
+                            display.displayItem("<br> Process has fininished but is still running. Please use kill command to terminate process.");
+                        }else{
+                            display.displayItem("<br>You must be in Directory0 to start this process!");
+                        }
                         break;
                     case 4:
-                        Processes.listOfProcesses[targetIndex].running=true;
-                        pRunning[targetIndex]=true;
-                        display.displayItem("<br> Process has fininished but is still running. Please use kill command to terminate process.");
+                        if(cDirectory=="Directory0"){
+                            Processes.listOfProcesses[targetIndex].running=true;
+                            pRunning[targetIndex]=true;
+                            display.displayItem("<br> Process has fininished but is still running. Please use kill command to terminate process.");
+                        }else{
+                            display.displayItem("<br>You must be in Directory0 to start this process!");
+                        }
                         break;
                     case 5:
-                        Processes.listOfProcesses[targetIndex].running=true;
-                        pRunning[targetIndex]=true;
-                        display.displayItem("<br> Process has fininished but is still running. Please use kill command to terminate process.");
+                        if(cDirectory=="Directory0"){
+                            Processes.listOfProcesses[targetIndex].running=true;
+                            pRunning[targetIndex]=true;
+                            display.displayItem("<br> Process has fininished but is still running. Please use kill command to terminate process.");
+                        }else{
+                            display.displayItem("<br>You must be in Directory0 to start this process!");
+                        }
                         break;
                     case 6: //chracterReader
-                        a4Processes[a4index].running=true;
-                        pRunning[targetIndex]=true;
-                        a4Processes[a4index].characterTracker();
-                        display.displayItem("<br>Process has finished successfully. You may kill this process to show result.");
+                        if(cDirectory=="Directory1"){
+                            a4Processes[a4index].running=true;
+                            pRunning[targetIndex]=true;
+                            a4Processes[a4index].characterTracker();
+                            display.displayItem("<br>Process has finished successfully. You may kill this process to show result.");
+                        }else{
+                            display.displayItem("<br>You must be in Directory1 to start this process!");
+                        }    
+                        break;    
                     case 7://angryMsgConverter1
+                        if(cDirectory=="Directory1"){
                         a4Processes[a4index].running=true;
-                        pRunning[targetIndex]=true;
-                        a4Processes[a4index].angryMsgConverter1();
-                        display.displayItem("<br>Relevent data is now being piped to next process."+ "<br>Please start angryMsgConverter2, do not kill this process before then.");
+                            pRunning[targetIndex]=true;
+                            a4Processes[a4index].angryMsgConverter1();
+                            display.displayItem("<br>Relevent data is now being piped to next process."+ "<br>Please start angryMsgConverter2, do not kill this process before then.");
+                        }else{
+                            display.displayItem("<br>You must be in Directory1 to start this process!");
+                        }    
                         break;
                     case 8: //angryMsgConverter2
-                        if(a4Processes[1].running==false){
-                            display.displayItem("<br>angryMsgConverter1 must be running to recieve needed data."+"<br>Please run angryMsgConverter1 first.");
+                        if(cDirectory=="Directory1"){
+                            if(a4Processes[1].running==false){
+                                display.displayItem("<br>angryMsgConverter1 must be running to recieve needed data."+"<br>Please run angryMsgConverter1 first.");
+                            }else{
+                                a4Processes[a4index].running=true;
+                                pRunning[targetIndex]=true;
+                                a4Processes[a4index].angryMsgConverter2();
+                                display.displayItem("<br>Relevent data is now being piped to next process."+ "<br>Please start angryMsgConverter3, do not kill this process before then.");
+                            }
                         }else{
-                            a4Processes[a4index].running=true;
-                            pRunning[targetIndex]=true;
-                            a4Processes[a4index].angryMsgConverter2();
-                            display.displayItem("<br>Relevent data is now being piped to next process."+ "<br>Please start angryMsgConverter3, do not kill this process before then.");
-                        }
+                            display.displayItem("<br>You must be in Directory1 to start this process!");
+                        }    
                         break;
                     case 9: //angryMsgConverter3
-                        if(a4Processes[2].running==false){
-                            display.displayItem("<br>angryMsgConverter2 must be running to recieve needed data."+"<br>Please run angryMsgConverter2 first.");
-                        }else{ 
-                            a4Processes[a4index].running=true;
-                            pRunning[targetIndex]=true;
-                            a4Processes[a4index].angryMsgConverter3();
-                            display.displayItem("<br> Process has finished succesfully. You may now kill this process to show result.");
-                        }
+                        if(cDirectory=="Directory1"){
+                            if(a4Processes[2].running==false){
+                                display.displayItem("<br>angryMsgConverter2 must be running to recieve needed data."+"<br>Please run angryMsgConverter2 first.");
+                            }else{ 
+                                a4Processes[a4index].running=true;
+                                pRunning[targetIndex]=true;
+                                a4Processes[a4index].angryMsgConverter3();
+                                display.displayItem("<br> Process has finished succesfully. You may now kill this process to show result.");
+                            }
+                        }else{
+                            display.displayItem("<br>You must be in Directory1 to start this process!");
+                        }      
                         break;
                     case 10:
-                        a4Processes[a4index].running=true;    
-                        pRunning[targetIndex]=true;
-                        a4Processes[a4index].diningPhilosophers();
-                        display.displayItem("<br> This process is still running however, please kill this process to stop.");
+                        
+                            a4Processes[a4index].running=true;    
+                            pRunning[targetIndex]=true;
+                            a4Processes[a4index].diningPhilosophers();
+                            display.displayItem("<br> This process is still running however, please kill this process to stop.");
+                        
                         break;
                     case 11: // needsToSleep 
-                        a4Processes[a4index].running = true;
-                        pRunning[targetIndex] = true;
-                        var state = a4Processes[a4index].needsToSleep(0);
-                        if (state === 0)
-                        {
-                            a4Processes[a4index].sleeping = true;
-                            display.displayItem("<br>needsToSleep process started. needsToSleep process will sleep until numberSummation is run.");                        
-                        }
-                        else if (state === 1)
-                        {
-                            a4Processes[a4index].sleeping = false;
-                        }
+                        if(cDirectory=="Directory1"){
+                            a4Processes[a4index].running = true;
+                            pRunning[targetIndex] = true;
+                            var state = a4Processes[a4index].needsToSleep(0);
+                            if (state === 0)
+                            {
+                                a4Processes[a4index].sleeping = true;
+                                display.displayItem("<br>needsToSleep process started. needsToSleep process will sleep until numberSummation is run.");                        
+                            }
+                            else if (state === 1)
+                            {
+                                a4Processes[a4index].sleeping = false;
+                            }
+                        }else{
+                            display.displayItem("<br>You must be in Directory1 to start this process!");
+                        }  
                         break;
                     case 12: // numberSummation
-                        a4Processes[a4index].running = true;
-                        pRunning[targetIndex] = true;
-                        var status = a4Processes[a4index].numberSummation();
-                        display.displayItem("<br>numberSummation process started. needsToSleep process should now wake up.");
-                        if (status === 1)
-                        {
-                            a4Processes[a4index-1].needsToSleep(1);
-                        }
+                        if(cDirectory=="Directory1"){
+                            a4Processes[a4index].running = true;
+                            pRunning[targetIndex] = true;
+                            var status = a4Processes[a4index].numberSummation();
+                            display.displayItem("<br>numberSummation process started. needsToSleep process should now wake up.");
+                            if (status === 1)
+                            {
+                                a4Processes[a4index-1].needsToSleep(1);
+                            }
+                        }else{
+                            display.displayItem("<br>You must be in Directory1 to start this process!");
+                        }  
                         break;
                       case 13:
+                          if(cDirectory=="Directory1"){
                             a4Processes[a4index].running = true;
                             pRunning[targetIndex] = true;
                             a4Processes[a4index+1].running=true;
                             pRunning[targetIndex+1]=true;
                             a4Processes[a4index ].Physics();
-                            display.displayItem("<br>Process finished calculating the height of dropping item. You may terminate this Process.");  
-                        break; 
+                            display.displayItem("<br>Process finished calculating the height of dropping item. You may terminate this Process.");
+                        }else{
+                            display.displayItem("<br>You must be in Directory1 to start this process!");
+                        }  
+                        break;
                     case 14:
                         display.displayItem("<br>addPhysicsTime is automatically spawned by Physics and is not meant to be started by the user. Please start Physics.")
                         break;
@@ -196,7 +303,17 @@ function doCommand(){
                        a4Processes[a4index].running = true;
                         pRunning[targetIndex] = true;
                         a4Processes[a4index].commandGroupFile();
-                    default:
+                    case 16:
+                       if(cDirectory=="Directory1"){ 
+                            a4Processes[a4index].running = true;
+                             pRunning[targetIndex] = true;
+                            a4Processes[a4index].copyfile();
+                            display.displayItem("file copy finished")
+                        }else{
+                            display.displayItem("<br>You must be in Directory1 to start this process!");
+                        }      
+                       break;    
+                    default:    
                        break;
                  }    
          }
@@ -227,24 +344,73 @@ function doCommand(){
             }
             break;
         case 7:                                                                      //cat command
-            if(Directory0.filename.indexOf(target)==-1){
-                display.badCommand(); 
-            }else{
-                targetIndex=Directory0.filename.indexOf(target);
-                display.displayItem("<br>Opening "+target);
-                display.displayItem("<br>"+ Directory0.content[targetIndex]);
+            if (cDirectory == "Directory0") {
+                var targetIndex = C[0].filename.indexOf(target);
+                if (targetIndex == -1) {
+                    display.badCommand();
+                }
+                else {
+                    targetIndex = C[0].filename.indexOf(target);
+                    display.displayItem("<br>Contents of " + target);
+                    display.displayItem("<br>" + C[0].content[targetIndex]);
+
+                }
+            }
+            else if (cDirectory == "Directory1") {
+                var targetIndex = C[1].filename.indexOf(target);
+                if (targetIndex == -1) {
+                    display.badCommand();
+                }
+                else {
+                    targetIndex = C[1].filename.indexOf(target);
+                    display.displayItem("<br>Contents of " + target);
+                    display.displayItem("<br>" + C[1].content[targetIndex]);
+
+                }
+            }
+            else {
+                var targetIndex = C[2].filename.indexOf(target);
+                if (targetIndex == -1) {
+                    display.badCommand();
+                }
+                else {
+                    display.displayItem("<br>Contents of " + target);
+                    display.displayItem("<br>" + C[2].content[targetIndex]);
+                }
             }
             break;
         case 8:                                                                      //ren command
-            if(Directory0.filename.indexOf(target)==-1){
-                display.badCommand();
-            }else if(name==""){
-                display.badCommand(); 
+              //ren command
+            if (cDirectory == "Directory0") {
+                if (C[0].filename.indexOf(target) == -1) {
+                    display.badCommand();
+                } else if (name == "") {
+                    display.badCommand();
+                } else {
+                    targetIndex = C[0].filename.indexOf(target);
+                    C[0].filename[targetIndex] = name;
+                    display.displayItem("<br>" + target + " renamed to " + name);
+                }
             }
-            else{
-                targetIndex=Directory0.filename.indexOf(target);
-                Directory0.filename[targetIndex]=name;
-                display.displayItem("<br>"+target+" renamed to "+name);
+            else if (cDirectory == "Directory1") {
+                if (C[1].filename.indexOf(target) == -1) {
+                    display.badCommand();
+                } else if (name == "") {
+                    display.badCommand();
+                } else {
+                    targetIndex = C[1].filename.indexOf(target);
+                    C[1].filename[targetIndex] = name;
+                    display.displayItem("<br>" + target + " renamed to " + name);
+                }
+            }
+            else {
+                if (C[2].filename.indexOf(target) == -1) {
+                    display.badCommand();
+                } else if (name == "") {
+                    display.badCommand();
+                } else {
+                    display.displayItem("<br>You can not rename directories!");
+                }
             }
             break;    
         case 9:                                                                      //man command
@@ -257,10 +423,52 @@ function doCommand(){
                         "</br>kill&emsp;&emsp;&thinsp;-&emsp;Terminate a running process and display its resulting computation. Enter command as follows: kill \<\fprocessname>"+
                         "</br>cat&emsp;&emsp;&thinsp;&thinsp;-&emsp;Displays contents of specified file. Enter command as follows: cat \<\ffilename\>"+
                         "</br>ren&emsp;&emsp;&thinsp;&thinsp;-&emsp;Renames specified file. Enter command as follows: ren \<\foldfilename\> \<\fnewfilename\>"+
-                        "</br>man&emsp;&ensp;&thinsp;&thinsp;-&emsp;The command manual, you're using it right now silly.";
+                        "</br>man&emsp;&ensp;&thinsp;&thinsp;-&emsp;The command manual, you're using it right now silly."+
+                        "</br>cd&emsp;&emsp;&thinsp;&thinsp;&thinsp;-&emsp;Change Directory. Enter command as follows: cd \<\fdirectoryname\>\n\
+                                 . To go back to C directory enter command as follows: cd .."+
+                        "</br>df&emsp;&emsp;&thinsp;&thinsp;&thinsp;-&emsp;Lists memory information."                                                                                                                     
+  
             display.displayItem(manual);                          
             break;    
+        //cd command    
+        case 10:
+            
+            if(target==".." && cDirectory!="C"){
+                cDirectory="C";
+                display.displayItem("<br>New directory: "+cDirectory);
+                
+            }        
+            else if(Directories.indexOf(target)==-1){
+                display.badCommand(); 
+            }
+            else if(cDirectory==target){
+                display.displayItem("<br>You are already in: "+cDirectory);  
+            }
+            else if(target=="C"){
+                  display.badCommand(); 
+                
+            }else if(target==".."){
+               cDirectory="C";
+               display.displayItem("<br>You are already in: "+cDirectory); 
+                
+            }
+            else {
+                cDirectory=target;
+                display.displayItem("<br>New directory: "+cDirectory);  
+            }
+            
+            break;    
+            
+        // df command (Assign 5, Paul)
+        // Displays information on total disk space, used disk space, available disk space.
+        // The df command does not calculate any values, it simply retrieves them.
+        case 11:
+            display.displayItem("<br>Total disk space: " + newOS.FS.totalSize + " kilobytes.");
+            display.displayItem("<br>Used disk space: " + newOS.FS.spaceUsed + " kilobytes.");
+            display.displayItem("<br>Available disk space: " + newOS.FS.spaceFree + " kilobytes.");            
+            break;
     }
+    newOS.FS.updateSpace(); // moved this here (from line 470) -Paul  
 }
 
 function threadIODeviceCommand(){
@@ -283,8 +491,7 @@ function threadIODeviceCommand(){
             break;
         default:
             return false;
-            break;
-            
+            break;       
     }
     return false;
 }
