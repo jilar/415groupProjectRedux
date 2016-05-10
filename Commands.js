@@ -1,15 +1,17 @@
 //Commands
 var command;                                                                                    //global variable acts to            
 var commandList=["clear","dir","delete", "copy", "ps", "start", "kill", "cat" ,
-    "ren","man","cd","df", "useradd", "su", "groupadd", "usermod"];    //list of commands
+    "ren","man","cd","df", "useradd", "su", "groupadd", "usermod", null, null, null, "pw"];    //list of commands
 var target;                                                                                     //target file/process for commands which ask for a second arguement
 var name;                                                                                        //for file name change
+var userPW;
+var loggedUser;
+var isUserMode = false, isLoggedIn = false, isCorrectPW = false, isSUMode = false, usedSUcmd = false; // used for checking user/super mode and logins in order to use CLI
 var commandIndex;
 var targetIndex;
 var displayResults=[]                 
 var pRunning=[false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false];
 var cDirectory="C";
-var upperDirectory="C";
 
 function checkCommand(){
     if(a4Processes[9].running == true){
@@ -31,9 +33,15 @@ function checkCommand(){
 function doCommand(){
     switch(commandIndex){
         case 0:                                                                      //clear command
-            display.clearDisplay();
+            if (isLoggedIn == true || isSUMode == true) {
+                display.clearDisplay();
+            }else {
+                display.displayItem("<br> You must login for specified user to access CLI");
+                display.displayItem("<br> Use su command, then pw command to login for specified user");
+            }    
             break;
         case 1:                                                                  //dir command
+        if (isLoggedIn == true || isSUMode == true) {    
             display.displayItem("<br>Folders/Files inside "+cDirectory+":");
             display.displayItem("<br>");
             var switcher=Directories.indexOf(cDirectory);
@@ -76,11 +84,15 @@ function doCommand(){
                         for(i=0; i<use[newSwitcher].filename.length; i++){
                         display.displayItem(use[newSwitcher].filename[i]);
                         }
-                    }
-                    
-            }    
+                    }       
+            }
+        }else{
+                display.displayItem("<br> You must login for specified user to access CLI");
+                display.displayItem("<br> Use su command, then pw command to login for specified user");
+        }    
             break;
         case 2:                                                         //delete command
+        if (isLoggedIn == true || isSUMode == true) {    
             if (cDirectory=="Directory0"){
                 var targetIndex=C[0].filename.indexOf(target);
                 if(targetIndex==-1){
@@ -109,9 +121,14 @@ function doCommand(){
                     display.displayItem("<br>You can not delete Directories, Groups, or Users!"); 
 //                }        
             }
+        }else {
+                display.displayItem("<br> You must login for specified user to access CLI");
+                display.displayItem("<br> Use su command, then pw command to login for specified user");
+        }    
             break;
         case 3:                                                                      //copy command
-             if (cDirectory=="Directory0"){
+         if (isLoggedIn == true || isSUMode == true) {     
+            if (cDirectory=="Directory0"){
                 if(C[0].filename.indexOf(target)==-1){
                     display.badCommand();
                 }else if(name==""){
@@ -135,17 +152,27 @@ function doCommand(){
                     display.displayItem("<br> File "+ name+" added to "+cDirectory);
                     C[1].content[0]=C[1].content[0]+" "+name;
                     }
-            }else{
-                if(C[2].filename.indexOf(target)==-1){
+            }else if (uDirectories.indexOf(cDirectory)!=-1){                                                        //if its a user
+                var userIndex=uDirectories.indexOf(cDirectory);
+                var targetIndex = use[userIndex].filename.indexOf(target);
+                if (targetIndex == -1) {
                     display.badCommand();
                 }else if(name==""){
                     display.badCommand(); 
-                }else{
-                    display.displayItem("<br>You can not copy directories!");
+                }else {
+                    display.displayItem("<br>Contents of " + target);
+                    display.displayItem("<br>" + use[userIndex].content[targetIndex]);
                 }    
-            }    
+            }else{
+                    display.displayItem("<br>You can not copy directories, users, or groups!");         
+            }
+        }else {
+                display.displayItem("<br> You must login for specified user to access CLI");
+                display.displayItem("<br> Use su command, then pw command to login for specified user");
+        }    
             break;
         case 4:                                                                      //ps command
+        if (isLoggedIn == true || isSUMode == true) {
             var counter=0;
             display.displayItem("<br> Currently running processes:");
             for(i=0; i<pRunning.length; i++){
@@ -155,9 +182,14 @@ function doCommand(){
               }  
             }if(counter==0){                                                        
                 display.displayItem("<br>Currently no processes are running");
-            }    
+            }   
+        }else{
+                display.displayItem("<br> You must login for specified user to access CLI");
+                display.displayItem("<br> Use su command, then pw command to login for specified user");
+        }    
             break;
         case 5:                                                                          //start command
+        if (isLoggedIn == true || isSUMode == true) {     
             targetIndex=ProcessNames.indexOf(target);
             if(targetIndex==-1){
                 display.badCommand();      
@@ -350,8 +382,13 @@ function doCommand(){
                        break;
                  }    
          }
+        } else {
+                display.displayItem("<br> You must login for specified user to access CLI");
+                display.displayItem("<br> Use su command, then pw command to login for specified user");
+        } 
         break;
         case 6:                                                                      //kill command   
+        if (isLoggedIn == true || isSUMode == true) {
             targetIndex=ProcessNames.indexOf(target);
             if(targetIndex==-1){
                 display.badCommand(); 
@@ -375,8 +412,13 @@ function doCommand(){
                     display.displayItem("<br>"+displayResults[targetIndex]);
                 }
             }
-            break;
+        } else {
+                display.displayItem("<br> You must login for specified user to access CLI");
+                display.displayItem("<br> Use su command, then pw command to login for specified user");
+        }    
+        break;
         case 7:                                                                      //cat command
+        if (isLoggedIn == true || isSUMode == true) {    
             if (cDirectory == "Directory0") {
                 var targetIndex = C[0].filename.indexOf(target);
                 if (targetIndex == -1) {
@@ -441,9 +483,13 @@ function doCommand(){
             }else {
                 display.badCommand();
             }
+        }else {
+                display.displayItem("<br> You must login for specified user to access CLI");
+                display.displayItem("<br> Use su command, then pw command to login for specified user");
+        }    
             break;
         case 8:                                                                      //ren command
-              //ren command
+        if (isLoggedIn == true || isSUMode == true) {     
             if (cDirectory == "Directory0") {
                 if (C[0].filename.indexOf(target) == -1) {
                     display.badCommand();
@@ -477,6 +523,10 @@ function doCommand(){
                     display.displayItem("<br>You can not rename directories!");
                 }
             }
+        } else {
+                display.displayItem("<br> You must login for specified user to access CLI");
+                display.displayItem("<br> Use su command, then pw command to login for specified user");
+        }    
             break;    
         case 9:                                                                      //man command
             var manual="</br>clear&emsp;&ensp;&thinsp;-&emsp;Erases the console window."+     
@@ -498,6 +548,7 @@ function doCommand(){
         
         //cd command    
         case 10:
+        if (isLoggedIn == true || isSUMode == true) {    
             if(target==".." && cDirectory!="C"){
                 cDirectory=upperDirectory;
                 display.displayItem("<br>New directory: "+cDirectory);
@@ -518,30 +569,41 @@ function doCommand(){
                     cDirectory=target;
                     display.displayItem("<br>New directory: "+cDirectory); 
             }
-            
+        } else {
+                display.displayItem("<br> You must login for specified user to access CLI");
+                display.displayItem("<br> Use su command, then pw command to login for specified user");
+        }    
             break;    
             
         // df command (Assign 5, Paul)
         // Displays information on total disk space, used disk space, available disk space.
         // The df command does not calculate any values, it simply retrieves them.
         case 11:
+         if (isLoggedIn == true || isSUMode == true) {    
             display.displayItem("<br>Total disk space: " + newOS.FS.totalSize + " kilobytes.");
             display.displayItem("<br>Used disk space: " + newOS.FS.spaceUsed + " kilobytes.");
             display.displayItem("<br>Available disk space: " + newOS.FS.spaceFree + " kilobytes.");            
             break;
-            
+        } else {
+                display.displayItem("<br> You must login for specified user to access CLI");
+                display.displayItem("<br> Use su command, then pw command to login for specified user");
+        }    
         // useradd command (Assign 6, Paul)
         case 12:
 //            display.displayItem("<br>// Debug - Entered case 12 for useradd command."); //debug
             var newUser = new User(target, name);
+            userPW = newUser.password;
             newOS.users.push(newUser);
+            newOS.userPWs.push(userPW);
+            var user = [newUser, userPW];    
+            newOS.userID.push(user);           // pushes an array containing the username and its password into userID[]
+            
             //creating a user directory for user (Assign 6,Jeffrey)
             var newFolder={filename:["BlankText.txt"], content:["This is a file owned by the user to play with."]};
             use.push(newFolder);
-            C[3].content[1]=C[3].content[1]+" "+target;                         //cat Groups 
-            C[5].filename.push(target);                                         //
+            C[3].content[1]=C[3].content[1]+" "+target;                          
+            C[5].filename.push(target);                                         
             C[5].content.push("BlankText.txt");
-//            C[5].filename.push(target)
             Directories.push(target);
             uDirectories.push(target);
             break;
@@ -568,52 +630,70 @@ function doCommand(){
                 // save old info
                 newOS.previousUser = newOS.currentUser;
                 newOS.previousUserMode = newOS.userMode;
-                
+
                 // switch user
                 newOS.currentUser = newOS.users[0]; // index 0 reserved for root
                 newOS.userMode = newOS.currentUser.type;
-                display.displayItem("<br>// Debug - Switched to root (super user)."); //debug                
+                isUserMode = false;
+                isSUMode = true;
+                display.displayItem("<br>Switched to root (super user)."); //debug                
             }
-            
+
             else if (target == "exit" && newOS.currentUser.name == "root")
             {
 //                display.displayItem("<br>// Debug - Entered exit and currentUser == root."); //debug
                 // revert to previous user and previous user mode
                 newOS.currentUser = newOS.previousUser; // index 0 reserved for root
                 newOS.userMode = newOS.previousUserMode;
-                display.displayItem("<br>// Debug - Reverted to previous user."); //debug                                
+                isUserMode = false;
+                isSUMode = false;
+                display.displayItem("<br>Reverted to previous user."); //debug                                
             }
-            
-            else if (target == "exit" && newOS.currentUser.name != "root")            
+
+            else if (target == "exit" && newOS.currentUser.name != "root")
             {
-                display.displayItem("<br>// You are not in super user mode.");
+                display.displayItem("<br>You are not in super user mode.");
             }
-            
+
             else
             {
 //                display.displayItem("<br>// Debug - Entered lookup of user."); //debug
-                
+
                 indexOfUser = findWithAttr(newOS.users, "name", target);
-                
+
+
                 // if invalid user
                 if (indexOfUser == -1)
                     display.displayItem("<br>Error: no such user.");
-                
+
                 else
                 {
-                    // save old info (probably not necessary, but just in case)
-                    newOS.previousUser = newOS.currentUser;
-                    newOS.previousUserMode = newOS.userMode;
-
-                    // switch user
-                    newOS.currentUser = newOS.users[indexOfUser];
-                    newOS.userMode = newOS.currentUser.type;
-                    display.displayItem("<br>// Debug - Switched to a different user."); //debug                
-                }                
+                    // when user types su <username>, prompts user to type in pw <password>
+                    if (isLoggedIn == false) {
+                        // save old info (probably not necessary, but just in case)
+                        newOS.previousUser = newOS.currentUser;
+                        newOS.previousUserPW = newOS.currentUserPW;
+                        newOS.previousUserMode = newOS.userMode;
+                        newOS.currentUser = newOS.users[indexOfUser];
+                        usedSUcmd = true;
+                        display.displayItem("<br>Enter password for user: " + target);
+                    }
+                    // when user wants to login using a different username, the previously logged in user is logged out
+                    if (isLoggedIn == true) {
+                        newOS.previousUser = newOS.currentUser;
+                        newOS.previousUserPW = newOS.currentUserPW;
+                        newOS.previousUserMode = newOS.userMode;
+                        newOS.currentUser = newOS.users[indexOfUser];
+                        display.displayItem("<br>User logged out.");
+                        usedSUcmd = true;
+                        isLoggedIn = false;
+                        isUserMode = true;
+                        display.displayItem("<br>Enter password for user: " + target);
+                    }
+                }
             }
-            
-            display.displayItem("<br>// Debug - currentUser=" + newOS.currentUser.name + ", userMode=" + newOS.userMode); //debug
-            
+
+            display.displayItem("<br>currentUser=" + newOS.currentUser.name + ", userMode=" + newOS.userMode); //debug
             break;
             
         // groupadd command (Assign 6, Paul)
@@ -686,7 +766,62 @@ function doCommand(){
                     newOS.groups[indexOfGroup].toString()); //debug  
             
             break;
+        
+        
+        // pw command (Assign 6, Leanna)
+        case 19:
+
+            // asks for user's password to login
+            // To use this command: pw <password> //confirms user's password and changes the current user to the specified user
+            if (usedSUcmd == false) {
+                display.displayItem("<br>Must use su command to login, then use pw command for specified user.");
+            } else if (isLoggedIn == false) {
+                for (var i = 0; i < newOS.userID.length; i++) {
+                    if ((newOS.currentUser == newOS.userID[i][0]) && (isUserMode == false) && (target == newOS.userID[i][1])) {
+                        display.displayItem("<br>Switched to a different user."); //debug
+                        display.displayItem("<br>User logged in as " + newOS.currentUser.name);
+                        newOS.userMode = newOS.currentUser.type;
+                        loggedUser = newOS.currentUser;
+                        isLoggedIn = true;
+                        isUserMode = true;
+                        isCorrectPW = true;
+                    } else if ((newOS.currentUser == newOS.userID[i][0]) && (isUserMode == true) && (target == newOS.userID[i][1])) {
+                        display.displayItem("<br>Switched to a different user."); //debug
+                        display.displayItem("<br>User logged in as " + newOS.currentUser.name);
+                        newOS.userMode = newOS.currentUser.type;
+                        loggedUser = newOS.currentUser;
+                        isLoggedIn = true;
+                        isUserMode = true;
+                        isCorrectPW = true;
+                    } else if ((isCorrectPW == false) && (isUserMode == true) && (isLoggedIn == true)) {
+                        display.displayItem("<br>Incorrect password for user: " + newOS.currentUser.name);
+                        display.displayItem("<br>Use su command to login again")
+                        newOS.currentUser = newOS.previousUser;
+                        //newOS.userMode = newOS.previousUserMode; 
+                        isUserMode = false;
+                    } else if (isCorrectPW == false) {
+                        display.displayItem("<br>Incorrect password for user: " + newOS.currentUser.name);
+                        display.displayItem("<br>Use su command to login again")
+                        newOS.currentUser = newOS.previousUser;
+                        //newOS.userMode = newOS.previousUserMode; 
+                        isUserMode = false;
+                        usedSUcmd = false;
+                    }
+                }
+            } else if ((usedSUcmd == false) || (target == "" && usedSUcmd == true)) {
+                display.displayItem("<br>Must use su command to login, then use pw command for specified user.");
+                isUserMode = false;
+            } else if (target == "" && usedSUcmd == true) {
+                display.displayItem("<br>Empty input");
+                isUserMode = false;
+            } else {
+                display.displayItem("<br>Must use su command to login, then use pw command for specified user.");
+                isUserMode = false;
+            }
+            display.displayItem("<br>currentUser=" + newOS.currentUser.name + ", userMode=" + newOS.userMode); //debug
+            break;
     }
+    
     newOS.FS.updateSpace(); // moved this here (from line 470) -Paul  
 }
 

@@ -159,11 +159,15 @@ var newOS = {
     },
     
     users: [],
+    userPWs: [],
     groups: [],
     currentUser: null,
+    currentUserPW: null,
     userMode: null,
     previousUser: null,
-    previousUserMode: null
+    previousUserPW: null,
+    previousUserMode: null,
+    userID: []
 };
 
 // a method to get an index of object by its property
