@@ -17,7 +17,16 @@ function keyboard() {
             command=splitter[0];
             target=splitter[1];
             name=splitter[2];
-        } 
+        }
+        
+        // to accomodate the usermod command, which is of the following form:
+        //     usermod -a -G <groupname> username // appends user to group
+        //     usermod -r -G <groupname> username // removes user form group        
+        else if (splitter.length == 5)
+        {
+            command = splitter[0];
+            target = splitter[1] + " " + splitter[2] + " " + splitter[3] + " " + splitter[4];
+        }
 //        document.getElementById("console").innerHTML +="<br>Debug "+command;        //debug statements
 //        document.getElementById("console").innerHTML +="<br>Debug "+target;
         checkCommand();
