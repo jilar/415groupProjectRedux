@@ -29,8 +29,6 @@ function User(name, password)
         this.type = "regular user";
     }
 
-    display.displayItem("<br>// Debug - created a new user with the following attributes:"); //debug
-    display.displayItem("<br>// Debug - name=" + this.name + ", pass=" + this.password + ", type=" + this.type + ", path=" + this.path);//debug
 }
 
 
@@ -38,7 +36,7 @@ function Group(name)
 {
     this.name = name;
     this.members = []; // array of User objects
-    display.displayItem("<br>// Debug - created a new group named " + this.name); //debug
+    display.displayItem("<br>Created a new group named " + this.name); //debug
     
     this.toString = function()
     {

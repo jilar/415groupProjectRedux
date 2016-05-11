@@ -24,10 +24,10 @@ window.onload = function ()
 //        newOS.users.push(defaultUser);
                 
         // initialize userMode
-        display.displayItem("<br> // Debug - Will now initialize userMode ..."); //debug        
+//        display.displayItem("<br> // Debug - Will now initialize userMode ..."); //debug        
         newOS.userMode = "notLoggedIn";
 //        newOS.previousUser = "notLoggedIn";
-        display.displayItem("<br> // Debug - userMode has been initialized to " + newOS.userMode); //debug
+//        display.displayItem("<br> // Debug - userMode has been initialized to " + newOS.userMode); //debug
         
         
         while (!everyProcessStopped)
