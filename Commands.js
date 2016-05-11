@@ -78,6 +78,7 @@ function doCommand(){
                         display.displayItem(C[5].filename[i]);
                     }
                 break;
+                
                 default :
                     newSwitcher=uDirectories.indexOf(cDirectory);
                     if(newSwitcher!=-1){
@@ -113,6 +114,17 @@ function doCommand(){
                     display.displayItem("<br>"+target+" deleted from Directory1");
                     C[2].content[1]=C[2].content[1].replace(target, '');
                 }
+            }else if (uDirectories.indexOf(cDirectory)!=-1){                                                        //if its a user
+                var userIndex=uDirectories.indexOf(cDirectory);
+                var targetIndex = use[userIndex].filename.indexOf(target);
+                if (targetIndex == -1) {
+                    display.badCommand();
+                }
+                else {
+                    use[userIndex].filename.splice(targetIndex, 1);
+                    use[userIndex].content.splice(targetIndex, 1);
+                   display.displayItem("<br>"+target+" deleted from "+cDirectory);
+                }    
             }else{                                                                     //Important directories
                 var targetIndex=C[2].filename.indexOf(target);
 //                if(targetIndex==-1){
@@ -160,8 +172,9 @@ function doCommand(){
                 }else if(name==""){
                     display.badCommand(); 
                 }else {
-                    display.displayItem("<br>Contents of " + target);
-                    display.displayItem("<br>" + use[userIndex].content[targetIndex]);
+                    use[userIndex].filename.push(name);
+                    use[userIndex].content.push(use[userIndex].content[targetIndex]);
+                    display.displayItem("<br> File "+ name+" added to "+cDirectory);
                 }    
             }else{
                     display.displayItem("<br>You can not copy directories, users, or groups!");         
@@ -470,7 +483,16 @@ function doCommand(){
                     display.displayItem("<br>Contents of " + target);
                     display.displayItem("<br>" + C[5].content[targetIndex]);
                 }    
-            }else if (uDirectories.indexOf(cDirectory)!=-1){                                                        //if its a user
+            } else if (cDirectory == "groups") {
+                var targetIndex = C[4].filename.indexOf(target);
+                if (targetIndex == -1) {
+                    display.badCommand();
+                }
+                else {
+                    display.displayItem("<br>Contents of " + target);
+                    display.displayItem("<br>" + C[4].content[targetIndex]);
+                }    
+            } else if (uDirectories.indexOf(cDirectory)!=-1){                                                        //if its a user 
                 var userIndex=uDirectories.indexOf(cDirectory);
                 var targetIndex = use[userIndex].filename.indexOf(target);
                 if (targetIndex == -1) {
@@ -513,15 +535,20 @@ function doCommand(){
                     display.displayItem("<br>" + target + " renamed to " + name);
                     C[2].content[1]=C[2].content[1].replace(target, name);
                 }
+            }else if (uDirectories.indexOf(cDirectory)!=-1){                                                        //if its a user
+                var userIndex=uDirectories.indexOf(cDirectory);
+                var targetIndex = use[userIndex].filename.indexOf(target);
+                if (targetIndex == -1) {
+                    display.badCommand();
+                }else if(name==""){
+                    display.badCommand(); 
+                }else {
+                    use[userIndex].filename[targetIndex]=name;
+                    display.displayItem("<br>" + target + " renamed to " + name);
+                }    
             }
             else {
-                if (C[2].filename.indexOf(target) == -1) {
-                    display.badCommand();
-                } else if (name == "") {
-                    display.badCommand();
-                } else {
-                    display.displayItem("<br>You can not rename directories!");
-                }
+                    display.displayItem("<br>You can not rename directories users or groups!");
             }
         } else {
                 display.displayItem("<br> You must login for specified user to access CLI");
@@ -541,7 +568,14 @@ function doCommand(){
                         "</br>man&emsp;&ensp;&thinsp;&thinsp;-&emsp;The command manual, you're using it right now silly."+
                         "</br>cd&emsp;&emsp;&thinsp;&thinsp;&thinsp;-&emsp;Change Directory. Enter command as follows: cd \<\fdirectoryname\>\n\
                                  . To go to C enter command as follows: cd .."+
-                        "</br>df&emsp;&emsp;&thinsp;&thinsp;&thinsp;-&emsp;Lists memory information."                                                                                                                     
+                        "</br>df&emsp;&emsp;&thinsp;&thinsp;&thinsp;-&emsp;Lists memory information."+    
+                        "</br>useradd&thinsp;&thinsp;-&emsp;Adds a new user to O/S, and creates a sub-directory for them in Groups. Enter command as follows:useradd \<\fusername\> \<\fpassword\> "+  
+                        "</br>su&emsp;&emsp;&thinsp;&thinsp;&thinsp;-&emsp;Switch users. Enter command as follows: su \<\fusername\>, must use pw command after to enter password. Entering su exit will revert to"+
+                        "</br>&emsp;&emsp;&emsp;&emsp;&emsp;previous user, entering su with no arguements will change to super user."+   
+                        "</br>ps&emsp;&emsp;&thinsp;&thinsp;&thinsp;-&emsp;After using su command with valid username type: pw \<\fpassword\> to enter password for user." +  
+                        "</br>groupadd&thinsp;-&thinsp;&thinsp;Adds a new group to the O/S. Enter command as follows: groupadd \<\fgroupname\>" + 
+                        "</br>usermod-&thinsp;&thinsp;Adds or removes a user from a group. To add users enter: usermod -a -G \<\fgroupname\> \<\fusername\>."+
+                        "</br>&emsp;&emsp;&emsp;&emsp;&thinsp;To remove users enter usermod -a -G \<\fgroupname\> \<\fusername\> " 
   
             display.displayItem(manual);                          
             break;
@@ -550,7 +584,7 @@ function doCommand(){
         case 10:
         if (isLoggedIn == true || isSUMode == true) {    
             if(target==".." && cDirectory!="C"){
-                cDirectory=upperDirectory;
+                cDirectory="C";
                 display.displayItem("<br>New directory: "+cDirectory);
                    
             }else if(target==".." && cDirectory=="C"){
@@ -606,6 +640,8 @@ function doCommand(){
             C[5].content.push("BlankText.txt");
             Directories.push(target);
             uDirectories.push(target);
+            display.displayItem("<br>Created a new user with the following attributes:"); //debug
+            display.displayItem("<br>name=" + target + ", pass=" + name);//debug
             break;
             
         // su command (Assign 6, Paul)
@@ -693,7 +729,7 @@ function doCommand(){
                 }
             }
 
-            display.displayItem("<br>currentUser=" + newOS.currentUser.name + ", userMode=" + newOS.userMode); //debug
+            display.displayItem("<br>CurrentUser=" + newOS.currentUser.name + ", UserMode=" + newOS.userMode); //debug
             break;
             
         // groupadd command (Assign 6, Paul)
@@ -703,7 +739,9 @@ function doCommand(){
         case 14:
             var newGroup = new Group(target);
             newOS.groups.push(newGroup);  
-            
+            C[3].content[0]=C[3].content[0]+" "+target;
+            C[4].filename.push(target);  
+            C[4].content.push("");  
             break;
         
         // usermod command (Assign 6, Paul)
@@ -746,15 +784,19 @@ function doCommand(){
             // add the user to the group
             if (targetArray[0] == "-a")
             {
-                display.displayItem("<br>Debug - adding user to group."); //debug
+                display.displayItem("<br>Adding user to group."); //debug
                 newOS.groups[indexOfGroup].members.push(username);
+                var targetIndex=C[4].filename.indexOf(groupname);
+                C[4].content[targetIndex]=C[4].content[targetIndex]+" "+username;
             }
             
             // remove the user from the group
             else if (targetArray[0] == "-r")
             {
-                display.displayItem("<br>Debug - removing user from group."); //debug                
-                newOS.groups[indexOfGroup].members.pop(username);                
+                display.displayItem("<br>Removing user from group."); //debug                
+                newOS.groups[indexOfGroup].members.pop(username);   
+                var targetIndex=C[4].filename.indexOf(groupname);
+                C[4].content[targetIndex]=C[4].content[targetIndex].replace(username, '');
             }
             
             // bad argument
@@ -762,8 +804,8 @@ function doCommand(){
                 display.displayItem("<br>Error: Invalid option(s). Example use of this command: usermod -a -G <groupname> username"); //debug
             
             // output what the group looks like now
-            display.displayItem("<br>Debug - Here is what the group looks like now: " + 
-                    newOS.groups[indexOfGroup].toString()); //debug  
+            display.displayItem("Here is what the group looks like now: " + 
+                    newOS.groups[indexOfGroup].toString());  
             
             break;
         

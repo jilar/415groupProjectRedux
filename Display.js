@@ -9,11 +9,14 @@ var display={
         if (cDirectory === "C"){
             display.displayItem("</br>" + pathname + " " + "\\" + cDirectory + "\\");
             document.getElementById("console").innerHTML += " > " + DisplayItem;
+        }else if (cDirectory == "Directory1"||cDirectory == "Directory0"||cDirectory == "Groups"){
+            currentpath = "</br> "+ pathname + "\\C\\" +  cDirectory + "\\" + " > " + DisplayItem;
+            document.getElementById("console").innerHTML += currentpath;
         }else if(cDirectory == "users"||cDirectory == "groups"){
             currentpath = "</br> "+ pathname + "\\C\\Groups\\" +  cDirectory + "\\" + " > " + DisplayItem;
             document.getElementById("console").innerHTML += currentpath;
-        }else if (cDirectory == "Directory1"||cDirectory == "Directory0"||cDirectory == "Groups"){
-            currentpath = "</br> "+ pathname + "\\C\\" +  cDirectory + "\\" + " > " + DisplayItem;
+        }else if (uDirectories.indexOf(cDirectory)!=-1){
+            currentpath = "</br> "+ pathname + "\\C\\Groups\\users\\" +  cDirectory + "\\" + " > " + DisplayItem;
             document.getElementById("console").innerHTML += currentpath;
         }else {
             currentpath = "</br> "+ pathname + "\\C\\" +  cDirectory + "\\" + " > " + DisplayItem;

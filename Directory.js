@@ -206,7 +206,7 @@ var C = [
         filename:["groups","users"],
         content:["",""]
     },
-    //directory of groups, updated with new users C[4]
+    //directory of groups, updated with new groups C[4]
     {    
         filename:[],
         content:[]
