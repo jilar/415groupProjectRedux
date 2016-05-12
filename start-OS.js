@@ -29,6 +29,16 @@ window.onload = function ()
 //        newOS.previousUser = "notLoggedIn";
 //        display.displayItem("<br> // Debug - userMode has been initialized to " + newOS.userMode); //debug
         
+        // initiazlie ACL objects for each file
+        for (var i = 0; i < C.length; i++)
+        {
+//            display.displayItem("<br> // Debug - Initializing ACLs."); //debug            
+            for (var j = 0; j < 10; j++)
+            {
+                var myACL = new ACL("root");
+                C[i].acl.push(myACL);
+            }
+        }
         
         while (!everyProcessStopped)
         {

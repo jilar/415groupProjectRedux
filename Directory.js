@@ -181,7 +181,8 @@ var C = [
                     "3.03\n" + "2.21\n" + "0.69\n" + "4.47\n" + "3.31\n" + "1.17\n" +
                     "0.76\n" + "1.17\n" + "1.57\n" + "2.62\n" + "1.66\n" + "2.05\n"
 
-        ]
+        ],
+        acl: []
     },
     {
         filename: ["characters.txt", "niceMessage.txt",
@@ -192,29 +193,34 @@ var C = [
             "Empty :(", //a4process4
             "1,2,3,4,5,6,7,8,9", // numbers.csv
             "9.8 "                                                                              //FallingSpeed.txt                                                 //characterTracker
-        //ACL: 
-        ]
+        ],
+        acl: []
     },
     {
         filename: ["Directory0", "Directory1","Groups"],
         content: ["bankBook.csv " + "ContactManager.csv " + "securityFile.csv " + "route.csv " +
                     "vectorData.csv " + "statsFile.csv " , "characters.txt " + "niceMessage.txt " +
-                    "DUMMYFILE.txt " + "numbers.csv " + "FallingSpeed.txt ", "groups " + "users "]
+                    "DUMMYFILE.txt " + "numbers.csv " + "FallingSpeed.txt ", "groups " + "users "],
+        acl: []
     },
     //the Groups file containing groups and users C[3]
     {    
         filename:["groups","users"],
-        content:["",""]
+        content:["",""],
+        acl: []
+
     },
     //directory of groups, updated with new groups C[4]
     {    
         filename:[],
-        content:[]
+        content:[],
+        acl: []
     }, 
     //directory of users, updated with new users C[5]
     {    
         filename:[],
-        content:[]
+        content:[],
+        acl: []
     }
 ];
 
