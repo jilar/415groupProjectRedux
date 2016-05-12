@@ -1,7 +1,7 @@
 //Commands
 var command;                                                                                    //global variable acts to            
 var commandList=["clear","dir","delete", "copy", "ps", "start", "kill", "cat" ,
-    "ren","man","cd","df", "useradd", "su", "groupadd", "usermod", null, null, null, "pw"];    //list of commands
+    "ren","man","cd","df", "useradd", "su", "groupadd", "usermod", null, "userdel", "usermode", "pw"];    //list of commands
 var target;                                                                                     //target file/process for commands which ask for a second arguement
 var name;                                                                                        //for file name change
 var userPW;
@@ -575,7 +575,9 @@ function doCommand(){
                         "</br>ps&emsp;&emsp;&thinsp;&thinsp;&thinsp;-&emsp;After using su command with valid username type: pw \<\fpassword\> to enter password for user." +  
                         "</br>groupadd&thinsp;-&thinsp;&thinsp;Adds a new group to the O/S. Enter command as follows: groupadd \<\fgroupname\>" + 
                         "</br>usermod-&thinsp;&thinsp;Adds or removes a user from a group. To add users enter: usermod -a -G \<\fgroupname\> \<\fusername\>."+
-                        "</br>&emsp;&emsp;&emsp;&emsp;&thinsp;To remove users enter usermod -a -G \<\fgroupname\> \<\fusername\> " 
+                        "</br>&emsp;&emsp;&emsp;&emsp;&thinsp;To remove users enter usermod -r -G \<\fgroupname\> \<\fusername\> " +
+                        "</br>usermode-&thinsp;Displays which user mode the OS is in."+
+                        "</br>userdel&thinsp;&thinsp;-&emsp;Removes a user from the OS. Enter command as follows: userdel \<\fusername\>";
   
             display.displayItem(manual);                          
             break;
@@ -632,16 +634,17 @@ function doCommand(){
             var user = [newUser, userPW];    
             newOS.userID.push(user);           // pushes an array containing the username and its password into userID[]
             
+            var myACL = new ACL(target);
+            
             //creating a user directory for user (Assign 6,Jeffrey)
-            var newFolder={filename:["BlankText.txt"], content:["This is a file owned by the user to play with."]};
+            var newFolder={filename:["BlankText.txt"], content:["This is a file owned by the user to play with."], acl:[]};
             use.push(newFolder);
+            use[use.length-1].acl.push(myACL);
             C[3].content[1]=C[3].content[1]+" "+target;                          
             C[5].filename.push(target);                                         
             C[5].content.push("BlankText.txt");
             Directories.push(target);
             uDirectories.push(target);
-            display.displayItem("<br>Created a new user with the following attributes:"); //debug
-            display.displayItem("<br>name=" + target + ", pass=" + name);//debug
             break;
             
         // su command (Assign 6, Paul)
@@ -809,6 +812,46 @@ function doCommand(){
             
             break;
         
+        //----------------------------------------------------------------------
+        // insert Yansens' case 16 command here!
+        //----------------------------------------------------------------------
+        
+        
+        // userdel command (Assign 6, Paul)
+        // Removes a user. Use: userdel <username>
+        // A user cannot be removed if he is the current user.
+        case 17:
+//            display.displayItem("<br>// Debug - Entered case 17 for userdel command."); //debug
+//            
+            // validate that the user exists
+            var indexOfUser = findWithAttr(newOS.users, "name", target);
+            if (indexOfUser == -1)
+            {
+                display.displayItem("<br>Error: That user doesn't exist.");
+                break;
+            }
+            
+            // make sure that the current user is not the one that is to be removed
+            else if (newOS.currentUser.name == target)
+            {
+                display.displayItem("<br>Error: Cannot remove yourself! Please execute this command as super user.");
+                break;
+            }                
+            
+            else
+            {
+                newOS.users.splice(indexOfUser, 1);
+                display.displayItem("<br>Success: The user " + target + " has been removed.");
+            }
+            break;
+            
+        // usermode command (Assign 6, Paul)
+        // Displays which user mode the OS is in: not logged in, regular user, 
+        // super user.
+        case 18:
+            display.displayItem("<br>User mode: " + newOS.userMode);
+            break;                   
+
         
         // pw command (Assign 6, Leanna)
         case 19:
