@@ -1,7 +1,7 @@
 //Commands
 var command;                                                                                    //global variable acts to            
 var commandList=["clear","dir","delete", "copy", "ps", "start", "kill", "cat" ,
-    "ren","man","cd","df", "useradd", "su", "groupadd", "usermod", null, "userdel", "usermode", "pw"];    //list of commands
+    "ren","man","cd","df", "useradd", "su", "groupadd", "usermod", "cfe", "userdel", "usermode", "pw"];    //list of commands
 var target;                                                                                     //target file/process for commands which ask for a second arguement
 var name;                                                                                        //for file name change
 var userPW;
@@ -575,9 +575,8 @@ function doCommand(){
                         "</br>ps&emsp;&emsp;&thinsp;&thinsp;&thinsp;-&emsp;After using su command with valid username type: pw \<\fpassword\> to enter password for user." +  
                         "</br>groupadd&thinsp;-&thinsp;&thinsp;Adds a new group to the O/S. Enter command as follows: groupadd \<\fgroupname\>" + 
                         "</br>usermod-&thinsp;&thinsp;Adds or removes a user from a group. To add users enter: usermod -a -G \<\fgroupname\> \<\fusername\>."+
-                        "</br>&emsp;&emsp;&emsp;&emsp;&thinsp;To remove users enter usermod -r -G \<\fgroupname\> \<\fusername\> " +
-                        "</br>usermode-&thinsp;Displays which user mode the OS is in."+
-                        "</br>userdel&thinsp;&thinsp;-&emsp;Removes a user from the OS. Enter command as follows: userdel \<\fusername\>";
+                        "</br>&emsp;&emsp;&emsp;&emsp;&thinsp;To remove users enter usermod -a -G \<\fgroupname\> \<\fusername\> "+
+                        "</br>cfe&emsp;&emsp;&thinsp;&thinsp;-&emsp;Check file permission. Enter command as follows: cfe \<\ffilename\>"
   
             display.displayItem(manual);                          
             break;
@@ -637,14 +636,15 @@ function doCommand(){
             var myACL = new ACL(target);
             
             //creating a user directory for user (Assign 6,Jeffrey)
-            var newFolder={filename:["BlankText.txt"], content:["This is a file owned by the user to play with."], acl:[]};
+            var newFolder={filename:["BlankText.txt"], content:["This is a file owned by the user to play with."],acl:[myACL]};
             use.push(newFolder);
-            use[use.length-1].acl.push(myACL);
             C[3].content[1]=C[3].content[1]+" "+target;                          
             C[5].filename.push(target);                                         
             C[5].content.push("BlankText.txt");
             Directories.push(target);
             uDirectories.push(target);
+            display.displayItem("<br>Created a new user with the following attributes:"); //debug
+            display.displayItem("<br>name=" + target + ", pass=" + name);//debug
             break;
             
         // su command (Assign 6, Paul)
@@ -813,15 +813,66 @@ function doCommand(){
             break;
         
         //----------------------------------------------------------------------
-        // insert Yansens' case 16 command here!
+        // insert Yansens' and Zi's case 16 command here!
+        // zi: "cfe" means "check file executed" by who
         //----------------------------------------------------------------------
-        
+         case 16:
+            if (isLoggedIn == true || isSUMode == true) {    
+                if (cDirectory=="Directory0"){
+                    var targetIndex=C[0].filename.indexOf(target);
+                    if(targetIndex==-1){
+                        display.badCommand(); 
+                    }else if(C[0].acl.lenght >0){
+                        for(var i =0; i<C[0].acl.length; i++){
+                            display.displayItem("<br>"+C[0].filename[targetIndex]+" is execuable for "+ C[0].acl[i].owner);
+                        }
+                    } else{
+                           display.displayItem("<br>"+C[0].filename[targetIndex]+" is execuable for root");
+                    }
+                    
+                }else if (cDirectory=="Directory1"){
+                    var targetIndex=C[1].filename.indexOf(target);
+                    if(targetIndex==-1){
+                        display.badCommand();  
+                    }else if(C[1].acl.lenght >0){
+                        for(var i =0; i<C[1].acl.length; i++){
+                            display.displayItem("<br>"+C[1].filename[targetIndex]+" is execuable for "+ C[1].acl[i].owner);
+                        }
+                    }else{
+                        display.displayItem("<br>"+C[1].filename[targetIndex]+" is execuable for root");
+                    }
+                }else if (uDirectories.indexOf(cDirectory)!=-1){                                                        //if its a user
+                    var userIndex=uDirectories.indexOf(cDirectory);
+                    var targetIndex = use[userIndex].filename.indexOf(target);
+                    if (targetIndex == -1) {
+                        display.badCommand();
+                    }else if(use[userIndex].acl.length >0){
+                        for(var i =0; i<use[userIndex].acl.length; i++){
+                            display.displayItem("<br>"+use[userIndex].filename[targetIndex]+" is execuable for "+ use[userIndex].acl[i].owner);
+                        }
+                    }else {
+                        display.displayItem("<br>"+use[userIndex].filename[targetIndex]+" is execuable for root");
+                    }    
+                }else{                                                                     //Important directories
+                    var targetIndex=C[2].filename.indexOf(target);
+    //                if(targetIndex==-1){
+    //                    display.badCommand(); 
+    //                }else{
+                        display.displayItem("<br>"+C[2].filename[targetIndex]+" is execuable for root");
+    //                }        
+                }
+            }else {
+                    display.displayItem("<br> You must login for specified user to access CLI");
+                    display.displayItem("<br> Use su command, then pw command to login for specified user");
+            }
+            
+            break;
         
         // userdel command (Assign 6, Paul)
-        // Removes a user. Use: userdel <username>
+        // Removes a user. Use: userdell <username>
         // A user cannot be removed if he is the current user.
         case 17:
-//            display.displayItem("<br>// Debug - Entered case 17 for userdel command."); //debug
+            display.displayItem("<br>// Debug - Entered case 17 for userdel command."); //debug
 //            
             // validate that the user exists
             var indexOfUser = findWithAttr(newOS.users, "name", target);
@@ -851,7 +902,6 @@ function doCommand(){
         case 18:
             display.displayItem("<br>User mode: " + newOS.userMode);
             break;                   
-
         
         // pw command (Assign 6, Leanna)
         case 19:
