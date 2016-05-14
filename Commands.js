@@ -1,7 +1,7 @@
 //Commands
 var command;                                                                                    //global variable acts to            
 var commandList=["clear","dir","delete", "copy", "ps", "start", "kill", "cat" ,
-    "ren","man","cd","df", "useradd", "su", "groupadd", "usermod", null, "userdel", "usermode", "pw"];    //list of commands
+    "ren","man","cd","df", "useradd", "su", "groupadd", "usermod", "cfe", "userdel", "usermode", "pw"];    //list of commands
 var target;                                                                                     //target file/process for commands which ask for a second arguement
 var name;                                                                                        //for file name change
 var userPW;
@@ -577,7 +577,8 @@ function doCommand(){
                         "</br>usermod-&thinsp;&thinsp;Adds or removes a user from a group. To add users enter: usermod -a -G \<\fgroupname\> \<\fusername\>."+
                         "</br>&emsp;&emsp;&emsp;&emsp;&thinsp;To remove users enter usermod -r -G \<\fgroupname\> \<\fusername\> " +
                         "</br>usermode-&thinsp;Displays which user mode the OS is in."+
-                        "</br>userdel&thinsp;&thinsp;-&emsp;Removes a user from the OS. Enter command as follows: userdel \<\fusername\>";
+                        "</br>userdel&thinsp;&thinsp;-&emsp;Removes a user from the OS. Enter command as follows: userdel \<\fusername\>"+
+                        "</br>cfe&emsp;&emsp;&thinsp;&thinsp;-&emsp;Check file permission. Enter command as follows: cfe \<\ffilename\>";
   
             display.displayItem(manual);                          
             break;
@@ -814,8 +815,59 @@ function doCommand(){
         
         //----------------------------------------------------------------------
         // insert Yansens' case 16 command here!
+        // zi: "cfe" means "check file executed" by who
         //----------------------------------------------------------------------
-        
+        case 16:
+            if (isLoggedIn == true || isSUMode == true) {    
+                if (cDirectory=="Directory0"){
+                    var targetIndex=C[0].filename.indexOf(target);
+                    if(targetIndex==-1){
+                        display.badCommand(); 
+                    }else if(C[0].acl.lenght >0){
+                        for(var i =0; i<C[0].acl.length; i++){
+                            display.displayItem("<br>"+C[0].filename[targetIndex]+" is execuable for "+ C[0].acl[i].owner);
+                        }
+                    } else{
+                           display.displayItem("<br>"+C[0].filename[targetIndex]+" is execuable for root");
+                    }
+                    
+                }else if (cDirectory=="Directory1"){
+                    var targetIndex=C[1].filename.indexOf(target);
+                    if(targetIndex==-1){
+                        display.badCommand();  
+                    }else if(C[1].acl.lenght >0){
+                        for(var i =0; i<C[1].acl.length; i++){
+                            display.displayItem("<br>"+C[1].filename[targetIndex]+" is execuable for "+ C[1].acl[i].owner);
+                        }
+                    }else{
+                        display.displayItem("<br>"+C[1].filename[targetIndex]+" is execuable for root");
+                    }
+                }else if (uDirectories.indexOf(cDirectory)!=-1){                                                        //if its a user
+                    var userIndex=uDirectories.indexOf(cDirectory);
+                    var targetIndex = use[userIndex].filename.indexOf(target);
+                    if (targetIndex == -1) {
+                        display.badCommand();
+                    }else if(use[userIndex].acl.length >0){
+                        for(var i =0; i<use[userIndex].acl.length; i++){
+                            display.displayItem("<br>"+use[userIndex].filename[targetIndex]+" is execuable for "+ use[userIndex].acl[i].owner);
+                        }
+                    }else {
+                        display.displayItem("<br>"+use[userIndex].filename[targetIndex]+" is execuable for root");
+                    }    
+                }else{                                                                     //Important directories
+                    var targetIndex=C[2].filename.indexOf(target);
+    //                if(targetIndex==-1){
+    //                    display.badCommand(); 
+    //                }else{
+                        display.displayItem("<br>"+C[2].filename[targetIndex]+" is execuable for root");
+    //                }        
+                }
+            }else {
+                    display.displayItem("<br> You must login for specified user to access CLI");
+                    display.displayItem("<br> Use su command, then pw command to login for specified user");
+            }
+            
+            break;
         
         // userdel command (Assign 6, Paul)
         // Removes a user. Use: userdel <username>
